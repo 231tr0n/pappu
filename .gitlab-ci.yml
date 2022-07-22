@@ -5,7 +5,7 @@ stages:
 build-code-job:
   stage: build
   script:
-    - echo "Check the nodejs version, then build some Ruby project files:"
+    - echo "Check the nodejs version, then build some nodejs project files:"
     - node -v
     - rake
 
