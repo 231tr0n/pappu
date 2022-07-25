@@ -19,14 +19,7 @@ global.bot = new discord.Client({
 		discord.GatewayIntentBits.DirectMessageTyping,
 		discord.GatewayIntentBits.GuildPresences,
 		discord.GatewayIntentBits.GuildMembers
-		// discord.GatewayIntentBits.GuildInvites,
-		// discord.GatewayIntentBits.GuildWebhooks,
-		// discord.GatewayIntentBits.GuildIntegrations,
-		// discord.GatewayIntentBits.GuildScheduledEvents,
-		// discord.GatewayIntentBits.GuildMessageContent,
-		// discord.GatewayIntentBits.GuildBans
-	],
-	partials: [discord.Partials.Channel]
+	]
 });
 
 bot.on('ready', async () => {
