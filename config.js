@@ -12,18 +12,11 @@ global.attended_character = '🟢';
 global.not_attended_character = '🔴';
 global.max_characters = 20;
 // global.server_id = '701019468725223444';
-global.server_id = '953989939241025577';
+global.server_id = '1001136632872849449';
 global.status_updates_channels = [
-	'953990515563593768'
-// 	'941007844893945886',
-// 	'871655871577456710',
-// 	'940851987510091836',
-// 	'940852229693386792',
-// 	'940852399487205426'
+	'1001136636052127777'
 ];
 global.admin_commands_channels = [
-	'953990540603588639'
-// 	'810470558936465418',
-// 	'871655959527817227'
+	'1001137229743271947'
 ];
 global.weekly_reset_day_number = 4;
