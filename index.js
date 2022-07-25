@@ -8,18 +8,25 @@ require('./config');
 
 global.bot = new discord.Client({
 	intents: [
-		discord.Intents.FLAGS.GUILDS,
-		discord.Intents.FLAGS.GUILD_VOICE_STATES,
-		discord.Intents.FLAGS.GUILD_MESSAGES,
-		discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-		discord.Intents.FLAGS.DIRECT_MESSAGES,
-		discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-		discord.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-		discord.Intents.FLAGS.GUILD_MESSAGE_TYPING,
-		discord.Intents.FLAGS.DIRECT_MESSAGE_TYPING,
-		discord.Intents.FLAGS.GUILD_PRESENCES,
-		discord.Intents.FLAGS.GUILD_MEMBERS
-	]
+		discord.GatewayIntentBits.Guilds,
+		discord.GatewayIntentBits.GuildVoiceStates,
+		discord.GatewayIntentBits.GuildMessages,
+		discord.GatewayIntentBits.GuildMessageReactions,
+		discord.GatewayIntentBits.DirectMessages,
+		discord.GatewayIntentBits.DirectMessageReactions,
+		discord.GatewayIntentBits.GuildEmojisAndStickers,
+		discord.GatewayIntentBits.GuildMessageTyping,
+		discord.GatewayIntentBits.DirectMessageTyping,
+		discord.GatewayIntentBits.GuildPresences,
+		discord.GatewayIntentBits.GuildMembers
+		// discord.GatewayIntentBits.GuildInvites,
+		// discord.GatewayIntentBits.GuildWebhooks,
+		// discord.GatewayIntentBits.GuildIntegrations,
+		// discord.GatewayIntentBits.GuildScheduledEvents,
+		// discord.GatewayIntentBits.GuildMessageContent,
+		// discord.GatewayIntentBits.GuildBans
+	],
+	partials: [discord.Partials.Channel]
 });
 
 bot.on('ready', async () => {
