@@ -38,6 +38,7 @@ global.admin_commands_channels = [
 First navigate to the project root folder and install all the dependencies related required using the following command:-
 ```bash
 npm install
+npm install -D
 ```
 
 To run the application execute the command:-
