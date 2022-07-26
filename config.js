@@ -11,12 +11,12 @@ global.fail_character = '❌';
 global.attended_character = '🟢';
 global.not_attended_character = '🔴';
 global.max_characters = 20;
-// global.server_id = '701019468725223444';
-global.server_id = '1001136632872849449';
+
+global.server_id = '1001381513616695296';
 global.status_updates_channels = [
-	'1001136636052127777'
+	'1001381514057105429'
 ];
 global.admin_commands_channels = [
-	'1001137229743271947'
+	'1001381625881444413'
 ];
 global.weekly_reset_day_number = 4;
