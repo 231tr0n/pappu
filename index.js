@@ -83,28 +83,25 @@ bot.on('messageCreate', async (message) => {
 								const split_message = message.content.split(' ');
 								switch (split_message[0]) {
 								case '$ping':
-									commands.ping(message);
-									break;
-								case '$version':
-									commands.version(message);
+									commands.ping.handler(message);
 									break;
 								case '$help':
-									commands.user_help(message);
+									commands.help.handler(message);
 									break;
 								case '$stats':
-									commands.stats(message);
+									commands.stats.handler(message);
 									break;
 								case '$update_nickname':
-									commands.update_nickname(message);
+									commands.update_nickname.handler(message);
 									break;
 								case '$weekly_stats_all':
-									commands.weekly_stats_all(message);
+									commands.weekly_stats_all.handler(message);
 									break;
 								case '$take_leave':
-									commands.take_leave(message);
+									commands.take_leave.handler(message);
 									break;
 								case '$get_meeting_absentees_list':
-									commands.get_meeting_absentees_list(message);
+									commands.get_meeting_absentees_list.handler(message);
 									break;
 								default:
 									message.react(fail_character);
@@ -120,85 +117,79 @@ bot.on('messageCreate', async (message) => {
 								const split_message = message.content.split(' ');
 								switch (split_message[0]) {
 								case '$ping':
-									commands.ping(message);
+									commands.ping.handler(message);
 									break;
-								case '$version':
-									commands.version(message);
-									break;
-								case '$admin_help':
-									commands.admin_help(message);
-									break;
-								case '$user_help':
-									commands.user_help(message);
+								case '$help':
+									commands.help.handler(message);
 									break;
 								case '$update_nickname':
-									commands.update_nickname(message);
+									commands.update_nickname.handler(message);
 									break;
 								case '$update_nickname_with_id':
-									commands.update_nickname_with_id(message);
+									commands.update_nickname_with_id.handler(message);
 									break;
 								case '$stats':
-									commands.stats(message);
+									commands.stats.handler(message);
 									break;
 								case '$weekly_stats_all':
-									commands.weekly_stats_all(message);
+									commands.weekly_stats_all.handler(message);
 									break;
 								case '$take_leave':
-									commands.take_leave(message);
+									commands.take_leave.handler(message);
 									break;
 								case '$show_all_ids':
-									commands.show_all_ids(message);
+									commands.show_all_ids.handler(message);
 									break;
 								case '$show_id':
-									commands.show_id(message);
+									commands.show_id.handler(message);
 									break;
 								case '$edit_user':
-									commands.edit_user(message);
+									commands.edit_user.handler(message);
 									break;
 								case '$change_weekly_reset_day_number':
-									commands.change_weekly_reset_day_number(message);
+									commands.change_weekly_reset_day_number.handler(message);
 									break;
 								case '$edit_id':
-									commands.edit_id(message);
+									commands.edit_id.handler(message);
 									break;
 								case '$add_user':
-									commands.add_user(message);
+									commands.add_user.handler(message);
 									break;
 								case '$add_id':
-									commands.add_id(message);
+									commands.add_id.handler(message);
 									break;
 								case '$get_meeting_absentees_list':
-									commands.get_meeting_absentees_list(message);
+									commands.get_meeting_absentees_list.handler(message);
 									break;
 								case '$total_reset':
-									commands.total_reset(message);
+									commands.total_reset.handler(message);
 									break;
 								case '$weekly_reset':
-									commands.weekly_reset(message);
+									commands.weekly_reset.handler(message);
 									break;
 								case '$monthly_reset':
-									commands.monthly_reset(message);
+									commands.monthly_reset.handler(message);
 									break;
 								case '$delete_user':
-									commands.delete_user(message);
+									commands.delete_user.handler(message);
 									break;
 								case '$delete_all':
-									commands.delete_all(message);
+									commands.delete_all.handler(message);
 									break;
 								case '$delete_id':
-									commands.delete_id(message);
+									commands.delete_id.handler(message);
 									break;
 								case '$backup':
-									commands.backup(message);
+									commands.backup.handler(message);
 									break;
 								case '$load_backup':
-									commands.load_backup(message);
+									commands.load_backup.handler(message);
 									break;
 								case '$delete_backup':
-									commands.delete_backup(message);
+									commands.delete_backup.handler(message);
 									break;
 								case '$shutdown':
-									commands.shutdown(message);
+									commands.shutdown.handler(message);
 									break;
 								default:
 									message.react(fail_character);
