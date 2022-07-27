@@ -1,4 +1,4 @@
-## status_updates_bot
+## Pappu
 
 This a discord bot which can be used to monitor status updates.
 
