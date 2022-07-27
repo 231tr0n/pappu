@@ -43,7 +43,7 @@ npm install -D
 
 To run the application execute the command:-
 ```bash
-node index.js
+node .
 ```
 
 ## Running the bot in the background.
