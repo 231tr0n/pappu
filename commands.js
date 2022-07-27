@@ -17,8 +17,6 @@ commands.help = {
 	handler: async (message) => {
 		let temp = '```';
 		for (const i in commands) {
-			// console.log(commands);
-			console.log(i);
 			if (status_updates_channels.includes(message.channel.id)) {
 				if (commands[i].type == 'user') {
 					temp += `${i}: ${commands[i].description}\n`;
