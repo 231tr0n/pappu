@@ -78,123 +78,34 @@ bot.on('messageCreate', async (message) => {
 						if (status_updates_channels.includes(message.channel.id)) {
 							message.react(attended_character);
 							if (message.content.startsWith('```')) {
-								commands.status_update(message);
+								commands.status_update.handler(message);
 							} else {
 								const split_message = message.content.split(' ');
-								switch (split_message[0]) {
-								case '$ping':
-									commands.ping.handler(message);
-									break;
-								case '$help':
-									commands.help.handler(message);
-									break;
-								case '$stats':
-									commands.stats.handler(message);
-									break;
-								case '$update_nickname':
-									commands.update_nickname.handler(message);
-									break;
-								case '$weekly_stats_all':
-									commands.weekly_stats_all.handler(message);
-									break;
-								case '$take_leave':
-									commands.take_leave.handler(message);
-									break;
-								case '$get_meeting_absentees_list':
-									commands.get_meeting_absentees_list.handler(message);
-									break;
-								default:
+								const command = split_message[0].slice(1);
+								if (commands[command]) {
+									if (commands[command].type == 'user') {
+										commands[command].handler(message);
+									} else {
+										message.react(fail_character);
+										message.reply('Are you stupid. Stop speaking the language which I dont understand.');
+									}
+								} else {
 									message.react(fail_character);
 									message.reply('Are you stupid. Stop speaking the language which I dont understand.');
-									break;
 								}
 							}
 						} else if (admin_commands_channels.includes(message.channel.id)) {
 							message.react(attended_character);
 							if (message.content.startsWith('```')) {
-								commands.status_update(message);
+								commands.status_update.handler(message);
 							} else {
 								const split_message = message.content.split(' ');
-								switch (split_message[0]) {
-								case '$ping':
-									commands.ping.handler(message);
-									break;
-								case '$help':
-									commands.help.handler(message);
-									break;
-								case '$update_nickname':
-									commands.update_nickname.handler(message);
-									break;
-								case '$update_nickname_with_id':
-									commands.update_nickname_with_id.handler(message);
-									break;
-								case '$stats':
-									commands.stats.handler(message);
-									break;
-								case '$weekly_stats_all':
-									commands.weekly_stats_all.handler(message);
-									break;
-								case '$take_leave':
-									commands.take_leave.handler(message);
-									break;
-								case '$show_all_ids':
-									commands.show_all_ids.handler(message);
-									break;
-								case '$show_id':
-									commands.show_id.handler(message);
-									break;
-								case '$edit_user':
-									commands.edit_user.handler(message);
-									break;
-								case '$change_weekly_reset_day_number':
-									commands.change_weekly_reset_day_number.handler(message);
-									break;
-								case '$edit_id':
-									commands.edit_id.handler(message);
-									break;
-								case '$add_user':
-									commands.add_user.handler(message);
-									break;
-								case '$add_id':
-									commands.add_id.handler(message);
-									break;
-								case '$get_meeting_absentees_list':
-									commands.get_meeting_absentees_list.handler(message);
-									break;
-								case '$total_reset':
-									commands.total_reset.handler(message);
-									break;
-								case '$weekly_reset':
-									commands.weekly_reset.handler(message);
-									break;
-								case '$monthly_reset':
-									commands.monthly_reset.handler(message);
-									break;
-								case '$delete_user':
-									commands.delete_user.handler(message);
-									break;
-								case '$delete_all':
-									commands.delete_all.handler(message);
-									break;
-								case '$delete_id':
-									commands.delete_id.handler(message);
-									break;
-								case '$backup':
-									commands.backup.handler(message);
-									break;
-								case '$load_backup':
-									commands.load_backup.handler(message);
-									break;
-								case '$delete_backup':
-									commands.delete_backup.handler(message);
-									break;
-								case '$shutdown':
-									commands.shutdown.handler(message);
-									break;
-								default:
+								const command = split_message[0].slice(1);
+								if (commands[command]) {
+									commands[command].handler(message);
+								} else {
 									message.react(fail_character);
 									message.reply('Are you stupid. Stop speaking the language which I dont understand.');
-									break;
 								}
 							}
 						}
