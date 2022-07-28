@@ -4,10 +4,10 @@
   "description": "This a discord bot which can be used to monitor status updates.",
   "main": "index.js",
   "scripts": {
-    "dev_start": "npx nodemon .",
+    "devstart": "npx nodemon .",
     "start": "node .",
     "lint": "npx eslint .",
-    "lint_fix": "npx eslint --fix ."
+    "lintfix": "npx eslint --fix ."
   },
   "repository": {
     "type": "git",
