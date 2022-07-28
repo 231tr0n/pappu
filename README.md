@@ -21,16 +21,9 @@ Go to the config.js file and change the following according to your own server:-
 global.server_id = '953989939241025577';
 global.status_updates_channels = [
 	'953990515563593768'
-// 	'941007844893945886',
-// 	'871655871577456710',
-// 	'940851987510091836',
-// 	'940852229693386792',
-// 	'940852399487205426'
 ];
 global.admin_commands_channels = [
 	'953990540603588639'
-// 	'810470558936465418',
-// 	'871655959527817227'
 ];
 ```
 `global.admin_commands_channels` and `global.status_updates_channels` are arrays which can be provided with multiple channels ids and the bot will work on all those channels.
