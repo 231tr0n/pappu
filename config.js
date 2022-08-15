@@ -1,4 +1,3 @@
-global.backup_file_name = './backup_data.json';
 global.status_update_character = '🟩';
 global.leave_character = '🟨';
 global.no_status_update_character = '🟥';
@@ -10,13 +9,16 @@ global.done_character = '✅';
 global.fail_character = '❌';
 global.attended_character = '🟢';
 global.not_attended_character = '🔴';
-global.max_characters = 20;
 
-global.server_id = '1001381513616695296';
+global.backup_file_name = './backup_data.json';
+
+global.server_id = '953989939241025577';
 global.status_updates_channels = [
-	'1001381514057105429'
+	'953990515563593768'
 ];
 global.admin_commands_channels = [
-	'1001381625881444413'
+	'953990540603588639'
 ];
-global.weekly_reset_day_number = 4;
+global.logs_channels = [
+	'1008837777011519600'
+];

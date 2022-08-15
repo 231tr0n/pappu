@@ -20,16 +20,16 @@
   },
   "homepage": "https://github.com/231tr0n/pentest-bot#readme",
   "dependencies": {
-    "discord.js": "^14.1.1",
+    "discord.js": "^14.2.0",
     "dotenv": "^16.0.1",
     "mariadb": "^3.0.1"
   },
   "devDependencies": {
-    "eslint": "^8.20.0",
+    "eslint": "^8.21.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "forever": "^4.0.3",
     "nodemon": "^2.0.19",
-    "npm-check-updates": "^16.0.2"
+    "npm-check-updates": "^16.0.5"
   }
 }
