@@ -5,16 +5,27 @@ This a discord bot which can be used to monitor status updates.
 
 ## Setup
 
-Requirements : Nodejs
+Requirements : Nodejs and Mariadb
 ```bash
-curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -;
+curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -;
 sudo apt update;
-sudo apt-get install -y nodejs;
+sudo apt-get install -y nodejs mariadb-server;
+sudo service mariadb start;
 sudo npm install -g npm@latest;
 ```
-Create a .env file, add the following line in it:-
+
+Change the password for the username which is going to be created in database.sql file.
 ```
-CLIENT_TOKEN='<API Token>'
+sudo mariadb -u root -p < database.sql;
+```
+
+Create a .env file, add the following lines in it and change the password to the one which you put:-
+```
+client_token='<API Token>'
+db_host='localhost'
+db_name='pappu'
+db_user='pappu'
+db_password='***********'
 ```
 Go to the config.js file and change the following according to your own server:-
 ```js
@@ -25,8 +36,11 @@ global.status_updates_channels = [
 global.admin_commands_channels = [
 	'953990540603588639'
 ];
+global._logs_channels = [
+	'953990540603588639'
+];
 ```
-`global.admin_commands_channels` and `global.status_updates_channels` are arrays which can be provided with multiple channels ids and the bot will work on all those channels.
+`global.admin_commands_channels`, `global.logs_channels` and `global.status_updates_channels` are arrays which can be provided with multiple channels ids and the bot will work on all those channels.
 
 First navigate to the project root folder and install all the dependencies related required using the following command:-
 ```bash
