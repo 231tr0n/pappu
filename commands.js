@@ -128,6 +128,7 @@ commands.shutdown = {
 	description: 'Shuts down the bot',
 	handler: async (message) => {
 		await utils.backup();
+		await database.end();
 		await message.react(done_character);
 		bot.destroy();
 		process.exit();
