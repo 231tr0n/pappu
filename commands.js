@@ -75,7 +75,7 @@ commands.query = {
 	handler: async (message) => {
 		if (message.content.startsWith('```') && message.content.endsWith('```')) {
 			const message_content = message.content.replaceAll('```', '');
-			database.query(message_content).then(async (results) => {
+			models.query(message_content).then(async (results) => {
 				message.reply(`\`\`\`${JSON.stringify(results, null, 4)}\`\`\``);
 				message.react(done_character);
 			}).catch(async (error) => {

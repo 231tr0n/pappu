@@ -1,7 +1,6 @@
 require('dotenv').config();
 require('./config');
 const discord = require('discord.js');
-const database = require('./database');
 const utils = require('./utils');
 const models = require('./models');
 const commands = require('./commands');
@@ -32,9 +31,9 @@ bot.on('ready', async () => {
 	await (async () => {
 		try {
 			await Promise.all([
-				database.query('CREATE TABLE IF NOT EXISTS `status_updates` (`date` DATE, `id` VARCHAR(100) NOT NULL, `update` INT NOT NULL)'),
-				database.query('CREATE TABLE IF NOT EXISTS `recruitment` (`date` DATE, `id` VARCHAR(100) NOT NULL, `git_repository` VARCHAR(100) NOT NULL, `submission_data` VARCHAR(10000) NOT NULL)'),
-				database.query('CREATE TABLE IF NOT EXISTS aliases (`id` VARCHAR(100) NOT NULL, `alias` VARCHAR(100) NOT NULL)')
+				models.query('CREATE TABLE IF NOT EXISTS `status_updates` (`date` DATE, `id` VARCHAR(100) NOT NULL, `update` INT NOT NULL)'),
+				models.query('CREATE TABLE IF NOT EXISTS `recruitment` (`date` DATE, `id` VARCHAR(100) NOT NULL, `git_repository` VARCHAR(100) NOT NULL, `submission_data` VARCHAR(10000) NOT NULL)'),
+				models.query('CREATE TABLE IF NOT EXISTS aliases (`id` VARCHAR(100) NOT NULL, `alias` VARCHAR(100) NOT NULL)')
 			]);
 			await utils.load_backup();
 		} catch (error) {
