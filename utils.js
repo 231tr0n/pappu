@@ -21,13 +21,13 @@ utils.backup = async () => {
 utils.load_backup = async () => {
 	if (fs.existsSync(backup_file_name)) {
 		const json = fs.readFileSync(backup_file_name, 'utf-8');
-		for (const i of json.status_updates) {
+		for (const i in json.status_updates) {
 			await models.status_updates.update_entry(i.id, i.update, i.date);
 		}
-		for (const i of json.aliases) {
+		for (const i in json.aliases) {
 			await models.aliases.update_entry(i.id, i.alias);
 		}
-		for (const i of json.recruitment) {
+		for (const i in json.recruitment) {
 			await models.recruitment.update_entry(i.id, i.git_repository, i.submission_data, i.date);
 		}
 	}

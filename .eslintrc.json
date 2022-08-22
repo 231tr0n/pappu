@@ -82,12 +82,21 @@
 			"warn"
 		],
 		"guard-for-in": [
-			"warn"
+			"off"
 		],
 		"prefer-destructuring": [
 			"off"
 		],
 		"no-await-in-loop": [
+			"off"
+		],
+		"no-restricted-globals": [
+			"off"
+		],
+		"no-alert": [
+			"off"
+		],
+		"no-continue": [
 			"off"
 		]
 	}
