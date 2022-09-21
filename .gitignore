@@ -1,4 +1,4 @@
-.env
-node_modules
-package-lock.json
-backup_data.json
+src/.env
+src/node_modules
+src/package-lock.json
+src/backup_data.json
