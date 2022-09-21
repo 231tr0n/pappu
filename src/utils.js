@@ -2,6 +2,9 @@ const fs = require('node:fs');
 const models = require('./models');
 
 const utils = {};
+utils.status_updates_channels = {};
+utils.admin_commands_channels = {};
+utils.logs_channels = {};
 
 utils.backup = async () => {
 	const json = {};
