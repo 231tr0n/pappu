@@ -31,8 +31,7 @@ bot.on('ready', async () => {
 		try {
 			await Promise.all([
 				models.query('CREATE TABLE IF NOT EXISTS `status_updates` (`date` DATE, `id` VARCHAR(100) NOT NULL, `update` INT NOT NULL)'),
-				models.query('CREATE TABLE IF NOT EXISTS `recruitment` (`date` DATE, `id` VARCHAR(100) NOT NULL, `git_repository` VARCHAR(100) NOT NULL, `submission_data` VARCHAR(10000) NOT NULL)'),
-				models.query('CREATE TABLE IF NOT EXISTS aliases (`id` VARCHAR(100) NOT NULL, `alias` VARCHAR(100) NOT NULL)')
+				models.query('CREATE TABLE IF NOT EXISTS `aliases` (`id` VARCHAR(100) NOT NULL, `alias` VARCHAR(100) NOT NULL)')
 			]);
 			await utils.load_backup();
 		} catch (error) {

@@ -14,7 +14,6 @@ models.query = (sql, params) => new Promise((resolve, reject) => {
 });
 
 models.status_updates = {};
-models.recruitment = {};
 models.aliases = {};
 
 models.status_updates.update_entry = async (id, update, date) => {
@@ -29,7 +28,11 @@ models.status_updates.update_entry = async (id, update, date) => {
 
 models.status_updates.get_entries = () => new Promise((resolve, reject) => {
 	models.query('SELECT * FROM `status_updates`').then((results) => {
-		resolve(results);
+		const array = [];
+		for (const i of results) {
+			array.push(i);
+		}
+		resolve(array);
 	}).catch((error) => {
 		reject(error);
 	});
@@ -57,20 +60,11 @@ models.aliases.update_entry = async (id, alias) => {
 
 models.aliases.get_entries = () => new Promise((resolve, reject) => {
 	models.query('SELECT * FROM `aliases`').then((results) => {
-		resolve(results);
-	}).catch((error) => {
-		reject(error);
-	});
-});
-
-models.recruitment.update_entry = async (id, git_repository, submission_data) => {
-	await models.query('DELETE FROM `recruitment` WHERE `id` = ?', [id]);
-	await models.query('INSERT INTO `recruitment` (`date`, `id`, `git_respository`, `submission_data`) VALUES (curdate(), ?, ?, ?)', [id, git_repository, submission_data]);
-};
-
-models.recruitment.get_entries = () => new Promise((resolve, reject) => {
-	models.query('SELECT * FROM `recruitment`').then((results) => {
-		resolve(results);
+		const array = [];
+		for (const i of results) {
+			array.push(i);
+		}
+		resolve(array);
 	}).catch((error) => {
 		reject(error);
 	});

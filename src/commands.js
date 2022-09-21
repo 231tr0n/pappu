@@ -134,15 +134,11 @@ commands.shutdown = {
 	type: ['admin'],
 	description: 'Shuts down the bot',
 	handler: async (message) => {
-		Promise.all([
-			utils.backup(),
-			database.end()
-		]).then(() => {
-			message.react(done_character).then(() => {
-				bot.destroy();
-				process.exit();
-			});
-		});
+		await utils.backup();
+		await message.react(done_character);
+		await database.end();
+		bot.destroy();
+		process.exit();
 	}
 };
 

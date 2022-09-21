@@ -2,24 +2,21 @@ const fs = require('node:fs');
 const models = require('./models');
 
 const utils = {};
+
 utils.status_updates_channels = {};
 utils.admin_commands_channels = {};
 utils.logs_channels = {};
 
 utils.backup = async () => {
-	const json = {};
-	models.status_updates.get_entries().then((results) => {
-		json.status_updates = results;
-		return models.recruitment.get_entries();
-	}).then((results) => {
-		json.recruitment = results;
-		return models.aliases.get_entries();
-	}).then((results) => {
-		json.aliases = results;
-	});
-	fs.rmSync(backup_file_name);
-	fs.writeFileSync(backup_file_name, JSON.stringify(json, null, 4));
-	return null;
+	const backup = {};
+	let results = await models.status_updates.get_entries();
+	backup.status_updates = results;
+	results = await models.aliases.get_entries();
+	backup.aliases = results;
+	if (fs.existsSync(backup_file_name)) {
+		fs.rmSync(backup_file_name);
+	}
+	fs.writeFileSync(backup_file_name, JSON.stringify(backup, null, 4));
 };
 
 utils.load_backup = async () => {
@@ -31,11 +28,7 @@ utils.load_backup = async () => {
 		for (const i in json.aliases) {
 			await models.aliases.update_entry(i.id, i.alias);
 		}
-		for (const i in json.recruitment) {
-			await models.recruitment.update_entry(i.id, i.git_repository, i.submission_data, i.date);
-		}
 	}
-	return null;
 };
 
 utils.status_updates_channels.broadcast = async (message) => {
