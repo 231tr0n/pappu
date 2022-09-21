@@ -1,5 +1,5 @@
 {
-  "name": "pappu",
+  "name": "pentest-bot",
   "version": "1.0.0",
   "description": "This a discord bot which can be used to monitor status updates.",
   "main": "index.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/bi0s.pentest/pappu.git"
+    "url": "git+https://github.com/231tr0n/pentest-bot.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/bi0s.pentest/pappu/issues"
+    "url": "https://github.com/231tr0n/pentest-bot/issues"
   },
-  "homepage": "https://gitlab.com/bi0s.pentest/pappu#readme",
+  "homepage": "https://github.com/231tr0n/pentest-bot#readme",
   "dependencies": {
     "discord.js": "^14.4.0",
     "dotenv": "^16.0.2",

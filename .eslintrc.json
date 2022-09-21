@@ -1,6 +1,5 @@
 {
   "env": {
-    "browser": true,
     "commonjs": true,
     "es2021": true,
     "node": true
@@ -24,9 +23,7 @@
     "admin_commands_channels": "readonly",
     "bot": "readonly"
   },
-  "extends": [
-    "airbnb-base"
-  ],
+  "extends": "airbnb-base",
   "parserOptions": {
     "ecmaVersion": "latest"
   },
