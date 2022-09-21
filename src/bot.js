@@ -65,10 +65,8 @@ bot.on('messageCreate', async (message) => {
       if (status_updates_channels.includes(message.channel.id)) {
         message.react(attended_character);
         if (message.content.startsWith('```') && message.content.endsWith('```')) {
-          await utils.logs_channels.broadcast(`${message.id} # ${message.channel.id} # ${message.author.id}: ${message.content}`);
           commands.status_update.handler(message);
         } else if (message.content.startsWith('$')) {
-          await utils.logs_channels.broadcast(`${message.id} # ${message.channel.id} # ${message.author.id}: ${message.content}`);
           const split_message = message.content.split(' ');
           const command = split_message[0].slice(1);
           if (commands[command]) {
@@ -86,10 +84,8 @@ bot.on('messageCreate', async (message) => {
       } else if (admin_commands_channels.includes(message.channel.id)) {
         message.react(attended_character);
         if (message.content.startsWith('```') && message.content.endsWith('```')) {
-          await utils.logs_channels.broadcast(`${message.id} # ${message.channel.id} # ${message.author.id}: ${message.content}`);
           commands.query.handler(message);
         } else if (message.content.startsWith('$')) {
-          await utils.logs_channels.broadcast(`${message.id} # ${message.channel.id} # ${message.author.id}: ${message.content}`);
           const split_message = message.content.split(' ');
           const command = split_message[0].slice(1);
           if (commands[command]) {
