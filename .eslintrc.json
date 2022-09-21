@@ -33,7 +33,7 @@
   "rules": {
     "indent": [
       "error",
-      2
+      "tab"
     ],
     "no-console": [
       "off"
