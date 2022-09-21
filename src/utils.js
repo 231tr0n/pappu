@@ -35,4 +35,22 @@ utils.load_backup = async () => {
   return null;
 };
 
+utils.status_updates_channels.broadcast = async (message) => {
+  for (const id of status_updates_channels) {
+    await bot.channels.cache.get(id).send(message);
+  }
+};
+
+utils.admin_commands_channels.broadcast = async (message) => {
+  for (const id of admin_commands_channels) {
+    await bot.channels.cache.get(id).send(message);
+  }
+};
+
+utils.logs_channels.broadcast = async (message) => {
+  for (const id of logs_channels) {
+    await bot.channels.cache.get(id).send(message);
+  }
+};
+
 module.exports = utils;
