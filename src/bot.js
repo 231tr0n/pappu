@@ -54,7 +54,7 @@ bot.on('ready', async () => {
       process.exit();
     }
   } catch (error) {
-    console.log('One of the ids in admin_commands_channels and status_updates_channels don\'t exist.');
+    console.log('One of the ids in admin_commands_channels, logs_channels or status_updates_channels don\'t exist.');
     process.exit();
   }
 });
