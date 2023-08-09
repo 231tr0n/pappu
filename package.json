@@ -2,7 +2,7 @@
   "name": "pappu",
   "version": "1.1.0",
   "description": "This a discord bot which can be used to monitor status updates.",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "devstart": "npx nodemon .",
     "start": "node .",
