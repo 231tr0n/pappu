@@ -6,13 +6,6 @@ This a discord bot which can be used to monitor status updates.
 ## Setup
 
 Requirements : Nodejs and Mariadb
-```bash
-curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -;
-sudo apt update;
-sudo apt-get install -y nodejs mariadb-server;
-sudo service mariadb start;
-sudo npm install -g npm@latest;
-```
 
 Change the password for the username which is going to be created in database.sql file.
 ```
@@ -27,6 +20,7 @@ db_name='pappu'
 db_user='pappu'
 db_password='***********'
 ```
+
 Go to the config.js file and change the following according to your own server:-
 ```js
 global.server_id = '953989939241025577';
@@ -45,7 +39,6 @@ global._logs_channels = [
 First navigate to the project root folder and install all the dependencies related required using the following command:-
 ```bash
 npm install
-npm install -D
 ```
 
 To run the application execute the command:-
