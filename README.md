@@ -17,7 +17,7 @@ Create a .env file, add the following lines in it and change the password to the
 client_token='<API Token>'
 db_host='localhost'
 db_name='pappu'
-db_user='pappu'
+db_username='pappu'
 db_password='***********'
 ```
 
