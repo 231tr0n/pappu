@@ -29,7 +29,7 @@
   "rules": {
     "indent": [
       "error",
-      "tab"
+      2
     ],
     "no-console": [
       "off"
@@ -48,7 +48,7 @@
     ],
     "comma-dangle": [
       "error",
-      "never"
+      "always"
     ],
     "eqeqeq": [
       "off"

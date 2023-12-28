@@ -12,13 +12,14 @@ global.not_attended_character = '🔴';
 
 global.backup_file_name = './backup_data.json';
 
-global.server_id = '953989939241025577';
+global.server_id = '701019468725223444';
 global.status_updates_channels = [
-	'953990515563593768'
+  '1137045485752950864',
+  '1157210615987847258',
 ];
 global.admin_commands_channels = [
-	'953990540603588639'
+  '1067487692843126845',
 ];
 global.logs_channels = [
-	'1008837777011519600'
+  '870931794676056094',
 ];
