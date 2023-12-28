@@ -40,10 +40,10 @@ bot.on('ready', async () => {
 		}
 	})();
 	try {
-		const guild = bot.guilds.cache.get(server_id);
-		await guild.members.fetch();
-		await guild.channels.fetch();
 		if (bot.guilds.cache.get(server_id)) {
+			const guild = bot.guilds.cache.get(server_id);
+			await guild.members.fetch();
+			await guild.channels.fetch();
 			await utils.status_updates_channels.broadcast('Hi. The Bot is online. I will be patrolling and monitoring you pretty closely. Don\'t try to evade status updates.');
 			await utils.admin_commands_channels.broadcast('The Bot is online.');
 			await utils.logs_channels.broadcast('The Bot is online.');
