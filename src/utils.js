@@ -1,5 +1,5 @@
-const fs = require('node:fs');
-const models = require('./models');
+import fs from 'node:fs';
+import models from './models.js';
 
 const utils = {};
 
@@ -49,4 +49,4 @@ utils.logs_channels.broadcast = async (message) => {
   }
 };
 
-module.exports = utils;
+export default utils;

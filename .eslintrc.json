@@ -1,7 +1,10 @@
 {
   "env": {
-    "commonjs": true,
     "node": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": "latest"
   },
   "globals": {
     "backup_file_name": "readonly",
@@ -23,10 +26,8 @@
     "bot": "readonly"
   },
   "extends": "airbnb-base",
-  "parserOptions": {
-    "ecmaVersion": "latest"
-  },
   "rules": {
+    "import/extensions": "off",
     "indent": [
       "error",
       2

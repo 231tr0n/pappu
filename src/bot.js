@@ -1,8 +1,10 @@
-require('./config');
-const discord = require('discord.js');
-const utils = require('./utils');
-const models = require('./models');
-const commands = require('./commands');
+import './config.js';
+
+import discord from 'discord.js';
+
+import utils from './utils.js';
+import models from './models.js';
+import commands from './commands.js';
 
 global.bot = new discord.Client({
   intents: [

@@ -1,4 +1,4 @@
-const mariadb = require('mariadb');
+import mariadb from 'mariadb';
 
 const pool = mariadb.createPool({
   host: process.env.db_host,
@@ -26,4 +26,4 @@ database.end = () => new Promise((resolve, reject) => {
   });
 });
 
-module.exports = database;
+export default database;

@@ -9,17 +9,8 @@ global.done_character = '✅';
 global.fail_character = '❌';
 global.attended_character = '🟢';
 global.not_attended_character = '🔴';
-
-global.backup_file_name = './backup_data.json';
-
-global.server_id = '701019468725223444';
-global.status_updates_channels = [
-  '1137045485752950864',
-  '1157210615987847258'
-];
-global.admin_commands_channels = [
-  '1067487692843126845'
-];
-global.logs_channels = [
-  '870931794676056094'
-];
+global.backup_file_name = process.env.backup_file_name;
+global.server_id = process.env.server_id;
+global.status_updates_channels = process.env.status_updates_channels.split(',');
+global.admin_commands_channels = process.env.admin_commands_channels.split(',');
+global.logs_channels = process.env.logs_channels.split(',');

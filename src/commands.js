@@ -1,6 +1,6 @@
-const utils = require('./utils');
-const database = require('./database');
-const models = require('./models');
+import utils from './utils.js';
+import database from './database.js';
+import models from './models.js';
 
 const commands = {};
 
@@ -142,4 +142,4 @@ commands.shutdown = {
   }
 };
 
-module.exports = commands;
+export default commands;

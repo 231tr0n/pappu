@@ -1,4 +1,4 @@
-const database = require('./database');
+import database from './database.js';
 
 const models = {};
 
@@ -70,4 +70,4 @@ models.aliases.get_entries = () => new Promise((resolve, reject) => {
   });
 });
 
-module.exports = models;
+export default models;

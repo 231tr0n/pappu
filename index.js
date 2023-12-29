@@ -1,2 +1,2 @@
-require('dotenv').config();
-require('./src/bot');
+import 'dotenv/config';
+import './src/bot.js';
