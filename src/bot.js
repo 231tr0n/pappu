@@ -41,23 +41,39 @@ bot.on('ready', async () => {
       process.exit();
     }
   })();
+  let guild = null;
   try {
-    if (bot.guilds.cache.get(server_id)) {
-      const guild = bot.guilds.cache.get(server_id);
-      await guild.members.fetch();
-      await guild.channels.fetch();
-      await utils.status_updates_channels.broadcast('Hi. The Bot is online. I will be patrolling and monitoring you pretty closely. Don\'t try to evade status updates.');
-      await utils.admin_commands_channels.broadcast('The Bot is online.');
-      await utils.logs_channels.broadcast('The Bot is online.');
-      console.log(`Logged in as: ${bot.user.tag}`);
-    } else {
-      console.log('Server id you entered doesn\'t exist.');
-      process.exit();
-    }
+    guild = bot.guilds.cache.get(server_id);
   } catch (error) {
-    console.log('One of the ids in admin_commands_channels, logs_channels or status_updates_channels don\'t exist.');
+    console.log('Server id you entered doesn\'t exist.');
     process.exit();
   }
+  try {
+    await guild.members.fetch();
+    await guild.channels.fetch();
+  } catch (error) {
+    console.log('Unable to fetch guild members or channels.');
+    process.exit();
+  }
+  try {
+    await utils.status_updates_channels.broadcast('Hello pappus. The Bot is online. I will be patrolling and monitoring you pretty closely. Don\'t try to evade status updates.');
+  } catch (error) {
+    console.log('One of the id in status_updates_channels doesn\'t exist.');
+    process.exit();
+  }
+  try {
+    await utils.admin_commands_channels.broadcast('The Bot is online.');
+  } catch (error) {
+    console.log('One of the id in admin_commands_channels doesn\'t exist.');
+    process.exit();
+  }
+  try {
+    await utils.logs_channels.broadcast('The Bot is online.');
+  } catch (error) {
+    console.log('One of the id in logs_channels doesn\'t exist.');
+    process.exit();
+  }
+  console.log(`Logged in as: ${bot.user.tag}`);
 });
 
 bot.on('messageCreate', async (message) => {
