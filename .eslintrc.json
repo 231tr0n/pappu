@@ -48,7 +48,7 @@
     ],
     "comma-dangle": [
       "error",
-      "always"
+      "never"
     ],
     "eqeqeq": [
       "off"

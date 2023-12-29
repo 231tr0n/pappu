@@ -15,11 +15,11 @@ global.backup_file_name = './backup_data.json';
 global.server_id = '701019468725223444';
 global.status_updates_channels = [
   '1137045485752950864',
-  '1157210615987847258',
+  '1157210615987847258'
 ];
 global.admin_commands_channels = [
-  '1067487692843126845',
+  '1067487692843126845'
 ];
 global.logs_channels = [
-  '870931794676056094',
+  '870931794676056094'
 ];
