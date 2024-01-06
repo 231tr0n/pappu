@@ -1,11 +1,7 @@
 # Pappu
 This a discord bot which can be used to monitor status updates.
 ## Setup
-Requirements : Nodejs and Mariadb<br>
-Change the password for the username which is going to be created in database.sql file.
-```
-sudo mariadb -u root -p < database.sql;
-```
+Requirements : Nodejs<br>
 Create a .env file, add the following lines in it and change the password to the one which you put:-
 ```
 client_token='<API Token>'
@@ -16,8 +12,7 @@ db_password='*******'
 server_id='999999999999999999'
 status_updates_channels='999999999999999999,9999999999999999998'
 admin_commands_channels='999999999999999999,9999999999999999998'
-logs_channels='999999999999999999'
-backup_file_name='./backup_data.json'
+logs_channels='999999999999999999,9999999999999999998'
 ```
 `admin_commands_channels`, `logs_channels` and `status_updates_channels` are multivauled fields which accept comma seperated values.<br>
 First navigate to the project root folder and install all the dependencies related required using the following command:-
