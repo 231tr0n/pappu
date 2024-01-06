@@ -9,7 +9,7 @@ models.statuses = Object.freeze({
 });
 
 models.setup = async () => {
-  await database.query('CREATE TABLE IF NOT EXISTS `status_updates` (`date` VARCHAR(100) NOT NULL UNIQUE default date());');
+  await database.query('CREATE TABLE IF NOT EXISTS `status_updates` (`date` VARCHAR(100) NOT NULL UNIQUE DEFAULT (date()))');
 };
 
 models.upsert_id = async (id) => {
@@ -29,9 +29,9 @@ models.upsert_date = async (date) => {
   if (date && Date.parse(date)) {
     results = database.query('SELECT * FROM `status_updates` WHERE date = ?', [date]);
   } else {
-    results = database.query('SELECT * FROM `status_updates` WHERE date = date()');
+    results = database.query('SELECT * FROM `status_updates` WHERE date = (date())');
   }
-  if (results.length > 0) {
+  if (results) {
     return;
   }
   if (date && Date.parse(date)) {
@@ -46,7 +46,7 @@ models.delete_date = async (date) => {
     await database.query('DELETE FROM `status_updates` WHERE `date` = ?', [date]);
     return;
   }
-  await database.query('DELETE FROM `status_updates` WHERE `date` = date()');
+  await database.query('DELETE FROM `status_updates` WHERE `date` = (date())');
 };
 
 models.upsert_status = async (id, status, date) => {
@@ -62,7 +62,7 @@ models.upsert_status = async (id, status, date) => {
     models.upsert_id(id),
     models.upsert_date()
   ]);
-  await database.query('UPDATE `status_updates` SET ? = ? WHERE date = date()', [id, status]);
+  await database.query('UPDATE `status_updates` SET ? = ? WHERE date = (date())', [id, status]);
 };
 
 models.update_status = async (id, status, date) => {
@@ -70,14 +70,14 @@ models.update_status = async (id, status, date) => {
     await database.query('UPDATE `status_updates` SET ? = ? WHERE date = ?', [id, status, date]);
     return;
   }
-  await database.query('UPDATE `status_updates` SET ? = ? WHERE date = date()', [id, status]);
+  await database.query('UPDATE `status_updates` SET ? = ? WHERE date = (date())', [id, status]);
 };
 
 models.get_statuses_on_date = async (date) => {
   if (date && Date.parse(date)) {
     return database.query('SELECT * FROM `status_updates` WHERE date = ?', [date]);
   }
-  return database.query('SELECT * FROM `status_updates` WHERE date = date()');
+  return database.query('SELECT * FROM `status_updates` WHERE date = (date())');
 };
 
 models.get_statuses_of_id = async (id) => database.query('SELECT ? FROM `status_updates`', [id]);
@@ -86,7 +86,7 @@ models.get_status_of_id_on_date = async (id, date) => {
   if (date && Date.parse(date)) {
     return database.query('SELECT ? FROM `status_updates` WHERE date = ?', [id, date]);
   }
-  return database.query('SELECT ? FROM `status_updates` WHERE date = date()', [id]);
+  return database.query('SELECT ? FROM `status_updates` WHERE date = (date())', [id]);
 };
 
 export default models;

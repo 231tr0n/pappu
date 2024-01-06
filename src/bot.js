@@ -34,7 +34,8 @@ bot.on('ready', async () => {
     try {
       await models.setup();
     } catch (error) {
-      console.log(error);
+      console.log(error.stack);
+      console.log('try');
       process.exit();
     }
   })();
@@ -174,7 +175,7 @@ bot.on('messageUpdate', async (old_message, message) => {
 
 bot.login(process.env.client_token);
 
-['SIGKILL', 'SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) => {
+['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) => {
   process.on(signal, async () => {
     console.log('SIGINT signal received. Closing the server.');
     try {

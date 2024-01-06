@@ -7,6 +7,7 @@ commands.ping = {
   description: 'Shows ping',
   handler: async (message) => {
     message.reply(`${Math.round(bot.ws.ping)}ms pong.`);
+    message.react(done_character);
   }
 };
 
@@ -28,11 +29,12 @@ commands.help = {
     }
     temp += '```';
     message.reply(temp);
+    message.react(done_character);
   }
 };
 
 commands.status_update = {
-  type: ['user', 'admin'],
+  type: ['user'],
   description: 'Puts status update',
   handler: async (message) => {
     models.upsert_status(message.author.id, models.statuses.update).then(() => {
@@ -42,7 +44,7 @@ commands.status_update = {
 };
 
 commands.take_holiday = {
-  type: ['user', 'admin'],
+  type: ['user'],
   description: 'Puts holiday',
   handler: async (message) => {
     models.upsert_status(message.author.id, models.statuses.holiday).then(() => {
@@ -66,6 +68,13 @@ commands.query = {
       message.reply(`\`\`\`${JSON.stringify(error, null, 4)}\`\`\``);
       message.react(fail_character);
     });
+  }
+};
+
+commands.modify_update = {
+  type: ['admin'],
+  description: 'Updates a user\'s status update',
+  handler: async (message) => {
   }
 };
 
@@ -122,7 +131,7 @@ commands.delete_update = {
 
 commands.get_updates = {
   type: ['user', 'admin'],
-  description: 'Prints all status updates in a given duration',
+  description: 'Prints all status updates in a given duration ([start_date(yyyy-mm-dd)(optional)] [end_date(yyyy-mm-dd)])',
   handler: async (message) => {
     const params = message.content.split(' ');
     let start_date = null;
@@ -149,7 +158,8 @@ commands.get_updates = {
       results.push(models.get_statuses_on_date(loop));
       loop = new Date(loop.setDate(loop.getDate() + 1));
     }
-    message.reply();
+    message.reply('```results```');
+    message.react(done_character);
   }
 };
 
