@@ -125,8 +125,31 @@ commands.get_updates = {
   description: 'Prints all status updates in a given duration',
   handler: async (message) => {
     const params = message.content.split(' ');
-    const start_date = params[1];
-    const end_date = params[2];
+    let start_date = null;
+    let end_date = null;
+    if (params.length < 2) {
+      message.reply('Wrong parameters passed');
+      message.react(fail_character);
+      return;
+    }
+    if (params.length === 2 && Date.parse(params[1])) {
+      start_date = new Date();
+      end_date = new Date(params[2]);
+    } else if (params.length > 2 && Date.parse(params[1]) && Date.parse(params[2])) {
+      start_date = new Date(params[1]);
+      end_date = new Date(params[2]);
+    } else {
+      message.reply('Wrong date format');
+      message.react(fail_character);
+      return;
+    }
+    let loop = new Date(start_date);
+    const results = [];
+    while (loop <= end_date) {
+      results.push(models.get_statuses_on_date(loop));
+      loop = new Date(loop.setDate(loop.getDate() + 1));
+    }
+    message.reply();
   }
 };
 

@@ -2,7 +2,7 @@
   "name": "pappu",
   "version": "1.1.0",
   "description": "This a discord bot which can be used to monitor status updates.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "devstart": "npx nodemon .",
     "start": "node .",
@@ -22,7 +22,7 @@
   "dependencies": {
     "discord.js": "^14.14.1",
     "dotenv": "^16.3.1",
-    "mariadb": "^3.2.3"
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "eslint": "^8.56.0",

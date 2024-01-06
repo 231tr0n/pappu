@@ -23,7 +23,8 @@
     "status_updates_channels": "readonly",
     "logs_channels": "readonly",
     "admin_commands_channels": "readonly",
-    "bot": "readonly"
+    "bot": "readonly",
+    "bot_command_initiator": "readonly"
   },
   "extends": "airbnb-base",
   "rules": {
@@ -50,9 +51,6 @@
     "comma-dangle": [
       "error",
       "never"
-    ],
-    "eqeqeq": [
-      "off"
     ],
     "max-len": [
       "off"

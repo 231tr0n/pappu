@@ -1,4 +1,4 @@
 .env
 node_modules
 package-lock.json
-backup_data.json
+pappu.db
