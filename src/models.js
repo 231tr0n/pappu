@@ -2,72 +2,91 @@ import database from './database.js';
 
 const models = {};
 
-models.query = (sql, params) => new Promise((resolve, reject) => {
-  database.query({
-    dateStrings: true,
-    sql
-  }, params).then((results) => {
-    resolve(results);
-  }).catch((error) => {
-    reject(error);
-  });
+models.statuses = Object.freeze({
+  holiday: 0,
+  update: 1,
+  no_update: -1
 });
 
-models.status_updates = {};
-models.aliases = {};
+models.setup = async () => {
+  await database.query('CREATE TABLE IF NOT EXISTS `status_updates` (`date` VARCHAR(100) NOT NULL UNIQUE default date());');
+};
 
-models.status_updates.update_entry = async (id, update, date) => {
-  if (date) {
-    await models.query('DELETE FROM `status_updates` WHERE `id` = ? `AND` date = ?', [id, date]);
-    await models.query('INSERT INTO `status_updates` (`date`, `id`, `update`) VALUES (?, ?, ?)', [date, id, update]);
+models.upsert_id = async (id) => {
+  const results = await database.query('SELECT ? FROM `status_updates` LIMIT 1', [id]);
+  if (results.length > 0) {
+    return;
+  }
+  await database.query('ALTER TABLE `status_updates` ADD COLUMN IF NOT EXISTS ? INT NOT NULL DEFAULT ?', [id, models.statuses.no_update]);
+};
+
+models.delete_id = async (id) => {
+  await database.query('ALTER TABLE `status_updates` DROP COLUMN IF EXISTS ?', [id]);
+};
+
+models.upsert_date = async (date) => {
+  let results = null;
+  if (date && Date.parse(date)) {
+    results = database.query('SELECT * FROM `status_updates` WHERE date = ?', [date]);
   } else {
-    await models.query('DELETE FROM `status_updates` WHERE `id` = ? AND `date` = curdate()', [id]);
-    await models.query('INSERT INTO `status_updates` (`date`, `id`, `update`) VALUES (curdate(), ?, ?)', [id, update]);
+    results = database.query('SELECT * FROM `status_updates` WHERE date = date()');
   }
-};
-
-models.status_updates.get_entries = () => new Promise((resolve, reject) => {
-  models.query('SELECT * FROM `status_updates`').then((results) => {
-    const array = [];
-    for (const i of results) {
-      array.push(i);
-    }
-    resolve(array);
-  }).catch((error) => {
-    reject(error);
-  });
-});
-
-models.status_updates.delete_entry = async (id, date) => {
-  if (date) {
-    await models.query('DELETE FROM `status_updates` WHERE `id` = ? AND `date` = ?', [id, date]);
-  } else {
-    await models.query('DELETE FROM `status_updates` WHERE `id` = ? AND `date` = curdate()', [id]);
+  if (results.length > 0) {
+    return;
   }
-};
-
-models.status_updates.insert_entry = async (id, update) => {
-  const results = await models.query('SELECT * FROM `status_updates` WHERE `id` = ? AND `date` = curdate()', [id]);
-  if (results.length == 0) {
-    await models.query('INSERT INTO `status_updates` (`date`, `id`, `update`) VALUES (curdate(), ?, ?)', [id, update]);
+  if (date && Date.parse(date)) {
+    await database.query('INSERT INTO `status_updates` (`date`) VALUES (?)', [date]);
+    return;
   }
+  await database.query('INSERT INTO `status_updates` (`date`) VALUES (date())');
 };
 
-models.aliases.update_entry = async (id, alias) => {
-  await models.query('DELETE FROM `aliases` WHERE `id` = ?', [id]);
-  await models.query('INSERT INTO `aliases` (`id`, `alias`) VALUES (?, ?)', [id, alias]);
+models.delete_date = async (date) => {
+  if (date && Date.parse(date)) {
+    await database.query('DELETE FROM `status_updates` WHERE `date` = ?', [date]);
+    return;
+  }
+  await database.query('DELETE FROM `status_updates` WHERE `date` = date()');
 };
 
-models.aliases.get_entries = () => new Promise((resolve, reject) => {
-  models.query('SELECT * FROM `aliases`').then((results) => {
-    const array = [];
-    for (const i of results) {
-      array.push(i);
-    }
-    resolve(array);
-  }).catch((error) => {
-    reject(error);
-  });
-});
+models.upsert_status = async (id, status, date) => {
+  if (date && Date.parse(date)) {
+    await Promise.all([
+      models.upsert_id(id),
+      models.upsert_date(date)
+    ]);
+    await database.query('UPDATE `status_updates` SET ? = ? WHERE date = ?', [id, status, date]);
+    return;
+  }
+  await Promise.all([
+    models.upsert_id(id),
+    models.upsert_date()
+  ]);
+  await database.query('UPDATE `status_updates` SET ? = ? WHERE date = date()', [id, status]);
+};
+
+models.update_status = async (id, status, date) => {
+  if (date && Date.parse(date)) {
+    await database.query('UPDATE `status_updates` SET ? = ? WHERE date = ?', [id, status, date]);
+    return;
+  }
+  await database.query('UPDATE `status_updates` SET ? = ? WHERE date = date()', [id, status]);
+};
+
+models.get_statuses_on_date = async (date) => {
+  if (date && Date.parse(date)) {
+    return database.query('SELECT * FROM `status_updates` WHERE date = ?', [date]);
+  }
+  return database.query('SELECT * FROM `status_updates` WHERE date = date()');
+};
+
+models.get_statuses_of_id = async (id) => database.query('SELECT ? FROM `status_updates`', [id]);
+
+models.get_status_of_id_on_date = async (id, date) => {
+  if (date && Date.parse(date)) {
+    return database.query('SELECT ? FROM `status_updates` WHERE date = ?', [id, date]);
+  }
+  return database.query('SELECT ? FROM `status_updates` WHERE date = date()', [id]);
+};
 
 export default models;

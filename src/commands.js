@@ -1,5 +1,3 @@
-import utils from './utils.js';
-import database from './database.js';
 import models from './models.js';
 
 const commands = {};
@@ -35,40 +33,21 @@ commands.help = {
 
 commands.status_update = {
   type: ['user', 'admin'],
-  description: 'Shows status update of the user',
+  description: 'Puts status update',
   handler: async (message) => {
-    models.status_updates.insert_entry(message.author.id, '1').then(() => {
+    models.upsert_status(message.author.id, models.statuses.update).then(() => {
       message.react(done_character);
     });
   }
 };
 
-commands.take_leave = {
+commands.take_holiday = {
   type: ['user', 'admin'],
-  description: 'User can take a leave',
+  description: 'Puts holiday',
   handler: async (message) => {
-    models.status_updates.insert_entry(message.author.id, '0').then(() => {
+    models.upsert_status(message.author.id, models.statuses.holiday).then(() => {
       message.react(done_character);
     });
-  }
-};
-
-commands.update_alias = {
-  type: ['user', 'admin'],
-  description: 'Change user alias',
-  handler: async (message) => {
-    const split_message = message.content.split(' ');
-    if (split_message.length == 2) {
-      if (split_message[1].length > 99) {
-        message.reply('Alias should be lesser than 90 characters.');
-      } else {
-        models.aliases.update_entry(message.author.id, split_message[1]).then(() => {
-          message.react(done_character);
-        });
-      }
-    } else {
-      message.reply('Command accepts only 1 argument.');
-    }
   }
 };
 
@@ -76,57 +55,78 @@ commands.query = {
   type: ['admin'],
   description: 'Lets you execute a query in the database',
   handler: async (message) => {
-    if (message.content.startsWith('```') && message.content.endsWith('```')) {
-      const message_content = message.content.replaceAll('```', '');
-      models.query(message_content).then(async (results) => {
-        message.reply(`\`\`\`${JSON.stringify(results, null, 4)}\`\`\``);
-        message.react(done_character);
-      }).catch(async (error) => {
-        message.reply(`\`\`\`${JSON.stringify(error, null, 4)}\`\`\``);
-        message.react(fail_character);
-      });
+    let message_content = message.content.replaceAll('```', '');
+    if (message_content.split(' ')[0] === `${bot_command_initiator}query`) {
+      message_content = message_content.split(' ').slice(1).join(' ');
     }
+    models.query(message_content).then(async (results) => {
+      message.reply(`\`\`\`${JSON.stringify(results, null, 4)}\`\`\``);
+      message.react(done_character);
+    }).catch(async (error) => {
+      message.reply(`\`\`\`${JSON.stringify(error, null, 4)}\`\`\``);
+      message.react(fail_character);
+    });
   }
 };
 
-commands.get_meeting_absentees_list = {
-  type: ['user', 'admin'],
-  description: 'Gets the list of members who are absent from the meeting',
+commands.delete_update = {
+  type: ['admin'],
+  description: 'Delete a status update made by the user ([@user], [status(update|no_update|holiday)] [date(yyyy-mm-dd)(optional)])',
   handler: async (message) => {
-    const guild = bot.guilds.cache.get(server_id);
-    let member = null;
-    models.aliases.get_entries().then((results) => {
-      let reply_message = '***The following list of members are absent.***\n';
-      for (const i of results) {
-        if (guild.members.cache.get(i.id)) {
-          member = guild.members.cache.get(i.id);
-          if (!member?.voice?.channel) {
-            reply_message += `<@${member.id}>\n`;
-          }
-        }
+    const params = message.content.split(' ');
+    if (params.length < 3 || (params[2] !== 'holiday' || params[2] !== 'update' || params[2] !== 'no_update') || message.mentions.members.length !== 1) {
+      message.reply('Wrong parameters passed');
+      message.react(fail_character);
+      return;
+    }
+    if (params.length === 4) {
+      if (!Date.parse(params[3])) {
+        message.reply('Wrong date format passed');
+        message.react(fail_character);
+        return;
       }
-      message.reply(reply_message);
-    });
-  }
-};
-
-commands.backup = {
-  type: ['admin'],
-  description: 'Backs up the database',
-  handler: async (message) => {
-    utils.backup().then(() => {
+      if (params[2] === 'holiday') {
+        models.update_status(message.mentions.members[0].id, models.statuses.holiday, params[3]).then(() => {
+          message.react(done_character);
+        });
+        return;
+      }
+      if (params[2] === 'update') {
+        models.update_status(message.mentions.members[0].id, models.statuses.update, params[3]).then(() => {
+          message.react(done_character);
+        });
+        return;
+      }
+      models.update_status(message.mentions.members[0].id, models.statuses.no_update, params[3]).then(() => {
+        message.react(done_character);
+      });
+      return;
+    }
+    if (params[2] === 'holiday') {
+      models.update_status(message.mentions.members[0].id, models.statuses.holiday).then(() => {
+        message.react(done_character);
+      });
+      return;
+    }
+    if (params[2] === 'update') {
+      models.update_status(message.mentions.members[0].id, models.statuses.update).then(() => {
+        message.react(done_character);
+      });
+      return;
+    }
+    models.update_status(message.mentions.members[0].id, models.statuses.no_update).then(() => {
       message.react(done_character);
     });
   }
 };
 
-commands.load_backup = {
-  type: ['admin'],
-  description: 'Backs up the database',
+commands.get_updates = {
+  type: ['user', 'admin'],
+  description: 'Prints all status updates in a given duration',
   handler: async (message) => {
-    utils.load_backup().then(() => {
-      message.react(done_character);
-    });
+    const params = message.content.split(' ');
+    const start_date = params[1];
+    const end_date = params[2];
   }
 };
 
@@ -134,11 +134,8 @@ commands.shutdown = {
   type: ['admin'],
   description: 'Shuts down the bot',
   handler: async (message) => {
-    await utils.backup();
     await message.react(done_character);
-    await database.end();
-    bot.destroy();
-    process.exit();
+    process.kill(process.pid, 'SIGTERM');
   }
 };
 

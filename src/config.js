@@ -9,6 +9,7 @@ global.done_character = '✅';
 global.fail_character = '❌';
 global.attended_character = '🟢';
 global.not_attended_character = '🔴';
+global.bot_command_initiator = '$';
 global.backup_file_name = process.env.backup_file_name;
 global.server_id = process.env.server_id;
 global.status_updates_channels = process.env.status_updates_channels.split(',');

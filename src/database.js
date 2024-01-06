@@ -1,28 +1,24 @@
-import mariadb from 'mariadb';
+import sqlite from 'sqlite3';
 
-const pool = mariadb.createPool({
-  host: process.env.db_host,
-  user: process.env.db_username,
-  password: process.env.db_password,
-  database: process.env.db_name,
-  connectionLimit: 9
-});
+const db = new sqlite.Database('pappu.db');
 
 const database = {};
 
 database.query = (...args) => new Promise((resolve, reject) => {
-  pool.query(...args).then((results) => {
-    resolve(results);
-  }).catch((error) => {
-    reject(error);
+  db.all(...args, (error, rows) => {
+    if (error) {
+      reject(error);
+    }
+    resolve(rows);
   });
 });
 
-database.end = () => new Promise((resolve, reject) => {
-  pool.end().then(() => {
+database.close = () => new Promise((resolve, reject) => {
+  db.close((error) => {
+    if (error) {
+      reject(error);
+    }
     resolve();
-  }).catch((error) => {
-    reject(error);
   });
 });
 
