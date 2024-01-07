@@ -70,13 +70,28 @@ models.upsert_status = async (id, status, date) => {
 };
 
 models.update_status = async (id, status, date) => {
-  if (date && Date.parse(date)) {
+  if (date && !Date.parse(date)) {
+    throw new Error('Wrong date provided');
+  }
+  if (status !== models.statuses.holiday || status !== models.statuses.update !== models.statuses.no_update) {
+    throw new Error('invalid status');
+  }
+  let res = null;
+  if (date) {
+    res = await models.get_status_of_id_on_date(id, date);
+  } else {
+    res = await models.get_status_of_id_on_date(id);
+  }
+  if (res === status) {
+    return;
+  }
+  const ret = await models.get_statuses_on_date(date);
+  if (date) {
     await database.query('UPDATE `status_updates` SET ? = ? WHERE date = ?', [
       id,
       status,
       date,
     ]);
-    return;
   }
   await database.query(
     'UPDATE `status_updates` SET ? = ? WHERE date = (date())',
@@ -86,15 +101,16 @@ models.update_status = async (id, status, date) => {
 
 models.get_statuses_on_date = async (date) => {
   let results = null;
-  if (date && Date.parse(date)) {
+  if (date) {
     results = await database.query(
       'SELECT * FROM `status_updates` WHERE date = ?',
       [date],
     );
+  } else {
+    results = await database.query(
+      'SELECT * FROM `status_updates` WHERE date = (date())',
+    );
   }
-  results = await database.query(
-    'SELECT * FROM `status_updates` WHERE date = (date())',
-  );
   let ret = null;
   if (results.length > 0) {
     ret = new models.status_return_type(
@@ -106,17 +122,20 @@ models.get_statuses_on_date = async (date) => {
 };
 
 models.get_status_of_id_on_date = async (id, date) => {
+  if (date && !Date.parse(date)) {
+    throw new Error('Wrong date provided');
+  }
   let results = null;
-  if (date && Date.parse(date)) {
+  if (date) {
     results = await database.query(
       'SELECT * FROM `status_updates` WHERE date = ?',
-      [id, date],
+      [date],
+    );
+  } else {
+    results = await database.query(
+      'SELECT * FROM `status_updates` WHERE date = (date())',
     );
   }
-  results = await database.query(
-    'SELECT ? FROM `status_updates` WHERE date = (date())',
-    [id],
-  );
   if (results.length > 0) {
     if (results[0].update.includes(id)) {
       return models.statuses.update;

@@ -53,7 +53,7 @@
       "off"
     ],
     "eqeqeq": [
-      "off"
+      "error"
     ],
     "max-len": [
       "off"
