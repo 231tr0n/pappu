@@ -34,8 +34,7 @@ bot.on('ready', async () => {
     try {
       await models.setup();
     } catch (error) {
-      console.log(error.stack);
-      console.log('try');
+      console.trace(error);
       process.exit();
     }
   })();
@@ -43,39 +42,38 @@ bot.on('ready', async () => {
   try {
     guild = bot.guilds.cache.get(server_id);
   } catch (error) {
-    console.log('Server id you entered doesn\'t exist.');
-    console.log(error);
+    console.log("Server id you entered doesn't exist.");
+    console.trace(error);
     process.exit();
   }
   try {
-    await Promise.all([
-      guild.members.fetch(),
-      guild.channels.fetch()
-    ]);
+    await Promise.all([guild.members.fetch(), guild.channels.fetch()]);
   } catch (error) {
     console.log('Unable to fetch guild members or channels.');
-    console.log(error);
+    console.trace(error);
     process.exit();
   }
   try {
-    await utils.bot.status_updates_channels.broadcast('Hello pappus. Pappu is back with the status update nightmare. I will be patrolling and monitoring you pretty closely. Don\'t try to evade status updates.');
+    await utils.bot.status_updates_channels.broadcast(
+      "Hello pappus. Pappu is back with the status update nightmare. I will be patrolling and monitoring you pretty closely. Don't try to evade status updates."
+    );
   } catch (error) {
-    console.log('One of the id in status_updates_channels doesn\'t exist.');
-    console.log(error);
+    console.log("One of the id in status_updates_channels doesn't exist.");
+    console.trace(error);
     process.exit();
   }
   try {
     await utils.bot.admin_commands_channels.broadcast('The Bot is online.');
   } catch (error) {
-    console.log('One of the id in admin_commands_channels doesn\'t exist.');
-    console.log(error);
+    console.log("One of the id in admin_commands_channels doesn't exist.");
+    console.trace(error);
     process.exit();
   }
   try {
     await utils.bot.logs_channels.broadcast('The Bot is online.');
   } catch (error) {
-    console.log('One of the id in logs_channels doesn\'t exist.');
-    console.log(error);
+    console.log("One of the id in logs_channels doesn't exist.");
+    console.trace(error);
     process.exit();
   }
   console.log(`Logged in as: ${bot.user.tag}`);
@@ -86,7 +84,10 @@ bot.on('messageCreate', async (message) => {
     if (message.author.id !== bot.user.id && message?.guild?.id === server_id) {
       if (status_updates_channels.includes(message.channel.id)) {
         message.react(attended_character);
-        if (message.content.startsWith('```') && message.content.endsWith('```')) {
+        if (
+          message.content.startsWith('```') &&
+          message.content.endsWith('```')
+        ) {
           commands.status_update.handler(message);
         } else if (message.content.startsWith(bot_command_initiator)) {
           const split_message = message.content.split(' ');
@@ -96,16 +97,23 @@ bot.on('messageCreate', async (message) => {
               commands[command].handler(message);
             } else {
               message.react(fail_character);
-              message.reply('Are you stupid. Stop speaking the language which I dont understand.');
+              message.reply(
+                'Are you stupid. Stop speaking the language which I dont understand.'
+              );
             }
           } else {
             message.react(fail_character);
-            message.reply('Are you stupid. Stop speaking the language which I dont understand.');
+            message.reply(
+              'Are you stupid. Stop speaking the language which I dont understand.'
+            );
           }
         }
       } else if (admin_commands_channels.includes(message.channel.id)) {
         message.react(attended_character);
-        if (message.content.startsWith('```') && message.content.endsWith('```')) {
+        if (
+          message.content.startsWith('```') &&
+          message.content.endsWith('```')
+        ) {
           commands.query.handler(message);
         } else if (message.content.startsWith(bot_command_initiator)) {
           const split_message = message.content.split(' ');
@@ -115,61 +123,33 @@ bot.on('messageCreate', async (message) => {
               commands[command].handler(message);
             } else {
               message.react(fail_character);
-              message.reply('Are you stupid. Stop speaking the language which I dont understand.');
+              message.reply(
+                'Are you stupid. Stop speaking the language which I dont understand.'
+              );
             }
           } else {
             message.react(fail_character);
-            message.reply('Are you stupid. Stop speaking the language which I dont understand.');
+            message.reply(
+              'Are you stupid. Stop speaking the language which I dont understand.'
+            );
           }
         }
       }
     }
   } catch (error) {
     try {
-      await utils.bot.logs_channels.broadcast(`@everyone, ${message.id} # ${message.channel.id} # ${message.author.id}: ${message.content}\n\`\`\`${error.toString()}\`\`\``);
+      await utils.bot.logs_channels.broadcast(
+        `@everyone, ${message.id} # ${message.channel.id} # ${
+          message.author.id
+        }: ${message.content}\n\`\`\`${error.toString()}\`\`\``
+      );
       message.react(repair_character);
-      message.reply('Bot\'s brain screw has become loose. Error occured with the bot. Please consult the bot-devs once about this message.');
+      message.reply(
+        "Bot's brain screw has become loose. Error occured with the bot. Please consult the bot-devs once about this message."
+      );
     } catch (err) {
-      console.log(err);
+      console.trace(err);
     }
-  }
-});
-
-bot.on('messageDelete', async (message) => {
-  try {
-    if (admin_commands_channels.includes(message.channel.id) || status_updates_channels.includes(message.channel.id)) {
-      if (message.content.startsWith('```') && message.content.endsWith('```')) {
-        const message_date = message.createdAt;
-        models.status_updates.delete_entry(message.author.id, `${message_date.getFullYear().toString()}-${(message_date.getMonth() + 1).toString()}-${message_date.getDate().toString()}`);
-        await utils.bot.logs_channels.broadcast(`@everyone, ${message.author.id} is acting stupid and has deleted a status update message. Removing his status update for the deleted message.`);
-        await utils.bot.logs_channels.broadcast('**The following content has been deleted by his stupidity**');
-        await utils.bot.logs_channels.broadcast(message.content);
-      } else if (message.content.startsWith(bot_command_initiator)) {
-        await utils.bot.logs_channels.broadcast(`@everyone, ${message.author.id} is acting stupid and has deleted a status update message. Removing his status update for the deleted message.`);
-        await utils.bot.logs_channels.broadcast('**The following content has been deleted by his stupidity**');
-        await utils.bot.logs_channels.broadcast(`\`\`\`${message.content}\`\`\``);
-      }
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-bot.on('messageUpdate', async (old_message, message) => {
-  try {
-    if (admin_commands_channels.includes(old_message.channel.id) || status_updates_channels.includes(old_message.channel.id)) {
-      if (old_message.content.startsWith('```') && old_message.content.endsWith('```')) {
-        await utils.bot.logs_channels.broadcast(`@everyone, ${old_message.author.id} has updated his status update message.`);
-        await utils.bot.logs_channels.broadcast(old_message.content);
-        await utils.bot.logs_channels.broadcast(message.content);
-      } else if (old_message.content.startsWith(bot_command_initiator)) {
-        await utils.bot.logs_channels.broadcast(`@everyone, ${message.author.id} has updated a bot command message.`);
-        await utils.bot.logs_channels.broadcast(`\`\`\`${old_message.content}\`\`\``);
-        await utils.bot.logs_channels.broadcast(`\`\`\`${message.content}\`\`\``);
-      }
-    }
-  } catch (error) {
-    console.log(error);
   }
 });
 
@@ -182,16 +162,15 @@ bot.login(process.env.client_token);
       await Promise.all([
         utils.bot.logs_channels.broadcast('Bot is Shutting down.'),
         utils.bot.admin_commands_channels.broadcast('Bot is shutting down.'),
-        utils.bot.status_updates_channels.broadcast('Goodbye pappus. I will be back for revenge with my status updates nightmare.')
+        utils.bot.status_updates_channels.broadcast(
+          'Goodbye pappus. I will be back for revenge with my status updates nightmare.'
+        )
       ]);
-      await Promise.all([
-        bot.destroy(),
-        database.close()
-      ]);
+      await Promise.all([bot.destroy(), database.close()]);
       console.log('Shutting down.');
       process.exit();
     } catch (error) {
-      console.log(error);
+      console.trace(error);
       process.exit();
     }
   });

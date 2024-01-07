@@ -6,7 +6,7 @@
   "scripts": {
     "devstart": "npx nodemon .",
     "start": "node .",
-    "lint": "npx eslint --fix ."
+    "lint": "prettier --check --write . && eslint --fix ."
   },
   "repository": {
     "type": "git",
@@ -27,9 +27,11 @@
   "devDependencies": {
     "eslint": "^8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "forever": "^4.0.3",
     "nodemon": "^3.0.2",
-    "npm-check-updates": "^16.14.12"
+    "npm-check-updates": "^16.14.12",
+    "prettier": "^3.1.1"
   }
 }

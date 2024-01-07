@@ -1,5 +1,3 @@
 {
-	"ignore": [
-		"backup_data.json"
-	]
+  "ignore": ["pappu.db"]
 }
