@@ -26,7 +26,7 @@ global.bot = new discord.Client({
     discord.GatewayIntentBits.GuildWebhooks,
     discord.GatewayIntentBits.GuildModeration,
     discord.GatewayIntentBits.GuildIntegrations,
-  ]
+  ],
 });
 
 bot.on('ready', async () => {
@@ -164,7 +164,7 @@ bot.login(process.env.client_token);
         utils.bot.admin_commands_channels.broadcast('Bot is shutting down.'),
         utils.bot.status_updates_channels.broadcast(
           'Goodbye pappus. I will be back for revenge with my status updates nightmare.',
-        )
+        ),
       ]);
       await Promise.all([bot.destroy(), database.close()]);
       console.log('Shutting down.');
