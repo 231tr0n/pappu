@@ -25,7 +25,7 @@ global.bot = new discord.Client({
     discord.GatewayIntentBits.GuildScheduledEvents,
     discord.GatewayIntentBits.GuildWebhooks,
     discord.GatewayIntentBits.GuildModeration,
-    discord.GatewayIntentBits.GuildIntegrations
+    discord.GatewayIntentBits.GuildIntegrations,
   ]
 });
 
@@ -55,7 +55,7 @@ bot.on('ready', async () => {
   }
   try {
     await utils.bot.status_updates_channels.broadcast(
-      "Hello pappus. Pappu is back with the status update nightmare. I will be patrolling and monitoring you pretty closely. Don't try to evade status updates."
+      "Hello pappus. Pappu is back with the status update nightmare. I will be patrolling and monitoring you pretty closely. Don't try to evade status updates.",
     );
   } catch (error) {
     console.log("One of the id in status_updates_channels doesn't exist.");
@@ -98,13 +98,13 @@ bot.on('messageCreate', async (message) => {
             } else {
               message.react(fail_character);
               message.reply(
-                'Are you stupid. Stop speaking the language which I dont understand.'
+                'Are you stupid. Stop speaking the language which I dont understand.',
               );
             }
           } else {
             message.react(fail_character);
             message.reply(
-              'Are you stupid. Stop speaking the language which I dont understand.'
+              'Are you stupid. Stop speaking the language which I dont understand.',
             );
           }
         }
@@ -124,13 +124,13 @@ bot.on('messageCreate', async (message) => {
             } else {
               message.react(fail_character);
               message.reply(
-                'Are you stupid. Stop speaking the language which I dont understand.'
+                'Are you stupid. Stop speaking the language which I dont understand.',
               );
             }
           } else {
             message.react(fail_character);
             message.reply(
-              'Are you stupid. Stop speaking the language which I dont understand.'
+              'Are you stupid. Stop speaking the language which I dont understand.',
             );
           }
         }
@@ -141,11 +141,11 @@ bot.on('messageCreate', async (message) => {
       await utils.bot.logs_channels.broadcast(
         `@everyone, ${message.id} # ${message.channel.id} # ${
           message.author.id
-        }: ${message.content}\n\`\`\`${error.toString()}\`\`\``
+        }: ${message.content}\n\`\`\`${error.toString()}\`\`\``,
       );
       message.react(repair_character);
       message.reply(
-        "Bot's brain screw has become loose. Error occured with the bot. Please consult the bot-devs once about this message."
+        "Bot's brain screw has become loose. Error occured with the bot. Please consult the bot-devs once about this message.",
       );
     } catch (err) {
       console.trace(err);
@@ -163,7 +163,7 @@ bot.login(process.env.client_token);
         utils.bot.logs_channels.broadcast('Bot is Shutting down.'),
         utils.bot.admin_commands_channels.broadcast('Bot is shutting down.'),
         utils.bot.status_updates_channels.broadcast(
-          'Goodbye pappus. I will be back for revenge with my status updates nightmare.'
+          'Goodbye pappus. I will be back for revenge with my status updates nightmare.',
         )
       ]);
       await Promise.all([bot.destroy(), database.close()]);

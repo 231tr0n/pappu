@@ -8,7 +8,7 @@ commands.ping = {
   handler: async (message) => {
     message.reply(`${Math.round(bot.ws.ping)}ms pong.`);
     message.react(done_character);
-  }
+  },
 };
 
 commands.help = {
@@ -30,7 +30,7 @@ commands.help = {
     temp += '```';
     message.reply(temp);
     message.react(done_character);
-  }
+  },
 };
 
 commands.status_update = {
@@ -40,7 +40,7 @@ commands.status_update = {
     models.upsert_status(message.author.id, models.statuses.update).then(() => {
       message.react(done_character);
     });
-  }
+  },
 };
 
 commands.take_holiday = {
@@ -52,7 +52,7 @@ commands.take_holiday = {
       .then(() => {
         message.react(done_character);
       });
-  }
+  },
 };
 
 commands.query = {
@@ -73,13 +73,13 @@ commands.query = {
         message.reply(`\`\`\`${JSON.stringify(error, null, 4)}\`\`\``);
         message.react(fail_character);
       });
-  }
+  },
 };
 
 commands.modify_update = {
   type: ['admin'],
   description: "Updates a user's status update",
-  handler: async (message) => {}
+  handler: async (message) => {},
 };
 
 commands.delete_update = {
@@ -110,7 +110,7 @@ commands.delete_update = {
           .update_status(
             message.mentions.members[0].id,
             models.statuses.holiday,
-            params[3]
+            params[3],
           )
           .then(() => {
             message.react(done_character);
@@ -122,7 +122,7 @@ commands.delete_update = {
           .update_status(
             message.mentions.members[0].id,
             models.statuses.update,
-            params[3]
+            params[3],
           )
           .then(() => {
             message.react(done_character);
@@ -133,7 +133,7 @@ commands.delete_update = {
         .update_status(
           message.mentions.members[0].id,
           models.statuses.no_update,
-          params[3]
+          params[3],
         )
         .then(() => {
           message.react(done_character);
@@ -161,7 +161,7 @@ commands.delete_update = {
       .then(() => {
         message.react(done_character);
       });
-  }
+  },
 };
 
 commands.get_updates = {
@@ -200,7 +200,7 @@ commands.get_updates = {
     }
     message.reply(`${results}  `);
     message.react(done_character);
-  }
+  },
 };
 
 commands.shutdown = {
@@ -209,7 +209,7 @@ commands.shutdown = {
   handler: async (message) => {
     await message.react(done_character);
     process.kill(process.pid, 'SIGTERM');
-  }
+  },
 };
 
 export default commands;
