@@ -1,6 +1,6 @@
-import sqlite from 'sqlite3';
+import sqlite from "sqlite3";
 
-const db = new sqlite.Database('pappu.db');
+const db = new sqlite.Database("pappu.db");
 
 const database = {};
 
