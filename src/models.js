@@ -2,6 +2,8 @@ import database from './database.js';
 
 const models = {};
 
+models.split_character = ',';
+
 models.statuses = Object.freeze({
   holiday: 0,
   update: 1,
@@ -9,7 +11,7 @@ models.statuses = Object.freeze({
 });
 
 models.status_return_type = (update, holiday) => {
-  if (!update || !holiday || !Array.isArray(update) || !Array.isArray(update)) {
+  if (!update || !holiday || !Array.isArray(update) || !Array.isArray(holiday)) {
     throw new Error('parameters are mandatory and should be arrays');
   }
   this.update = update;
@@ -23,7 +25,7 @@ models.setup = async () => {
 };
 
 models.insert_date = async (date) => {
-  if (date && !Date.parse(date)) {
+  if (date && !Date.parse(date) && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
     throw new Error('wrong date provided');
   }
   let results = null;
@@ -36,7 +38,7 @@ models.insert_date = async (date) => {
       'SELECT * FROM `status_updates` WHERE date = (date())',
     );
   }
-  if (results) {
+  if (results && results.length > 0) {
     return;
   }
   if (date) {
@@ -49,7 +51,7 @@ models.insert_date = async (date) => {
 };
 
 models.delete_date = async (date) => {
-  if (date && Date.parse(date)) {
+  if (date && Date.parse(date) && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
     await database.query('DELETE FROM `status_updates` WHERE `date` = ?', [
       date,
     ]);
@@ -59,7 +61,7 @@ models.delete_date = async (date) => {
 };
 
 models.insert_status = async (id, status, date) => {
-  if (date && !Date.parse(date)) {
+  if (date && !Date.parse(date) && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
     throw new Error('wrong date provided');
   }
   if (status !== models.statuses.holiday || status !== models.statuses.update) {
@@ -81,9 +83,9 @@ models.insert_status = async (id, status, date) => {
     res = await models.get_statuses_on_date();
   }
   if (status === models.statuses.update) {
-    res.update += `,${id}`;
+    res.update.push(id);
   } else {
-    res.holiday += `,${id}`;
+    res.holiday.push(id);
   }
   if (date) {
     await models.set_statuses_on_date(res, date);
@@ -93,7 +95,7 @@ models.insert_status = async (id, status, date) => {
 };
 
 models.upsert_status = async (id, status, date) => {
-  if (date && !Date.parse(date)) {
+  if (date && !Date.parse(date) && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
     throw new Error('wrong date provided');
   }
   if (status !== models.statuses.holiday || status !== models.statuses.update !== models.statuses.no_update) {
@@ -115,14 +117,14 @@ models.upsert_status = async (id, status, date) => {
     ret = await models.get_statuses_on_date();
   }
   if (status === models.statuses.update) {
-    ret.holiday = ret.holiday.split(',').filter((item) => item !== id).join(',');
-    ret.update += `,${id}`;
+    ret.holiday = ret.holiday.filter((item) => item !== id);
+    ret.update.push(id);
   } else if (status === models.statuses.holiday) {
-    ret.update = ret.update.split(',').filter((item) => item !== id).join(',');
-    ret.holiday += `,${id}`;
+    ret.update = ret.update.filter((item) => item !== id);
+    ret.holiday.push(id);
   } else {
-    ret.update = ret.update.split(',').filter((item) => item !== id).join(',');
-    ret.holiday = ret.holiday.split(',').filter((item) => item !== id).join(',');
+    ret.update = ret.update.filter((item) => item !== id);
+    ret.holiday = ret.holiday.filter((item) => item !== id);
   }
   if (date) {
     await models.set_statuses_on_date(ret, date);
@@ -132,7 +134,7 @@ models.upsert_status = async (id, status, date) => {
 };
 
 models.set_statuses_on_date = async (statuses, date) => {
-  if (date && !Date.parse(date)) {
+  if (date && !Date.parse(date) && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
     throw new Error('wrong date provided');
   }
   if (!statuses || !statuses.update || !statuses.holiday || !Array.isArray(statuses.update) || !Array.isArray(statuses.holiday)) {
@@ -140,15 +142,15 @@ models.set_statuses_on_date = async (statuses, date) => {
   }
   if (date) {
     await models.delete_date(date);
-    await database.query('INSERT INTO `status_updates` (`date`, `update`, `holiday`) VALUES (?, ?, ?)', [date, statuses.update.join(','), statuses.holiday.join(',')]);
+    await database.query('INSERT INTO `status_updates` (`date`, `update`, `holiday`) VALUES (?, ?, ?)', [date, statuses.update.join(models.split_character), statuses.holiday.join(models.split_character)]);
     return;
   }
   await models.delete_date();
-  await database.query('INSERT INTO `status_updates` (`date`, `update`, `holiday`) VALUES (date(), ?, ?)', [statuses.update.join(','), statuses.holiday.join(',')]);
+  await database.query('INSERT INTO `status_updates` (`date`, `update`, `holiday`) VALUES (date(), ?, ?)', [statuses.update.join(models.split_character), statuses.holiday.join(models.split_character)]);
 };
 
 models.get_statuses_on_date = async (date) => {
-  if (date && !Date.parse(date)) {
+  if (date && !Date.parse(date) && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
     throw new Error('wrong date provided');
   }
   let results = null;
@@ -163,35 +165,30 @@ models.get_statuses_on_date = async (date) => {
     );
   }
   let ret = null;
-  if (results.length > 0) {
+  if (results && results.length > 0) {
     ret = new models.status_return_type(
-      results[0].update.split(','),
-      results[0].holiday.split(','),
+      results[0].update.split(models.split_character),
+      results[0].holiday.split(models.split_character),
     );
   }
   return ret;
 };
 
 models.get_status_of_id_on_date = async (id, date) => {
-  if (date && !Date.parse(date)) {
+  if (date && !Date.parse(date) && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
     throw new Error('wrong date provided');
   }
   let results = null;
   if (date) {
-    results = await database.query(
-      'SELECT * FROM `status_updates` WHERE date = ?',
-      [date],
-    );
+    results = models.get_statuses_on_date(date);
   } else {
-    results = await database.query(
-      'SELECT * FROM `status_updates` WHERE date = (date())',
-    );
+    results = models.get_statuses_on_date(date);
   }
-  if (results.length > 0) {
-    if (results[0].update.includes(id)) {
+  if (results) {
+    if (results.update.includes(id)) {
       return models.statuses.update;
     }
-    if (results[0].holiday.includes(id)) {
+    if (results.holiday.includes(id)) {
       return models.statuses.holiday;
     }
   }
