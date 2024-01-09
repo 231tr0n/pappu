@@ -20,7 +20,7 @@ models.status_return_type = (update, holiday) => {
 
 models.setup = async () => {
   await database.query(
-    'CREATE TABLE IF NOT EXISTS `status_updates` (`date` TEXT NOT NULL UNIQUE DEFAULT (date()), `update` TEXT NOT NULL, `holiday` TEXT NOT NULL)',
+    'CREATE TABLE IF NOT EXISTS `status_updates` (`date` TEXT NOT NULL UNIQUE DEFAULT (date()), `update` TEXT NOT NULL DEFAULT "", `holiday` TEXT NOT NULL DEFAULT "")',
   );
 };
 
