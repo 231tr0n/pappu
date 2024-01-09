@@ -80,16 +80,14 @@ commands.modify_update = {
     const params = message.content.split(' ');
     if (
       params.length < 3
-      || params[2] !== 'holiday'
-      || params[2] !== 'update'
-      || params[2] !== 'no_update'
+      || (params[2] !== 'holiday' && params[2] !== 'update' && params[2] !== 'no_update')
       || message.mentions.members.length !== 1
     ) {
       message.reply('wrong parameters passed');
       message.react(fail_character);
       return;
     }
-    if (params.length > 3 && !Date.parse(params[3]) && /^\d{4}-\d{2}-\d{2}$/.test(params[3])) {
+    if (params.length > 3 && !Date.parse(params[3]) && !/^\d{4}-\d{2}-\d{2}$/.test(params[3])) {
       message.reply('wrong date format passed');
       message.react(fail_character);
       return;
