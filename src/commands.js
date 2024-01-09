@@ -150,7 +150,7 @@ commands.get_updates = {
       start_date = new Date(params[1]);
       end_date = new Date(params[2]);
     } else {
-      message.reply('wrong date format');
+      message.reply('wrong date format passed');
       message.react(fail_character);
       return;
     }
