@@ -9,10 +9,6 @@ Create a .env file, add the following lines in it and change the password to the
 
 ```
 client_token='<API Token>'
-db_host='localhost'
-db_name='pappu'
-db_username='pappu'
-db_password='*******'
 server_id='999999999999999999'
 status_updates_channels='999999999999999999,9999999999999999998'
 admin_commands_channels='999999999999999999,9999999999999999998'
