@@ -14,8 +14,10 @@ models.status_return_type = (update, holiday) => {
   if (!update || !holiday || !Array.isArray(update) || !Array.isArray(holiday)) {
     throw new Error('parameters are mandatory and should be arrays');
   }
-  this.update = update;
-  this.holiday = holiday;
+  const ret = {};
+  ret.update = update;
+  ret.holiday = holiday;
+  return ret;
 };
 
 models.setup = async () => {
@@ -30,11 +32,11 @@ models.insert_date = async (date) => {
   }
   let results = null;
   if (date) {
-    results = database.query('SELECT * FROM `status_updates` WHERE date = ?', [
+    results = await database.query('SELECT * FROM `status_updates` WHERE date = ?', [
       date,
     ]);
   } else {
-    results = database.query(
+    results = await database.query(
       'SELECT * FROM `status_updates` WHERE date = (date())',
     );
   }
@@ -169,7 +171,7 @@ models.get_statuses_on_date = async (date) => {
   }
   let ret = null;
   if (results && results.length > 0) {
-    ret = new models.status_return_type(
+    ret = models.status_return_type(
       results[0].update.split(models.split_character),
       results[0].holiday.split(models.split_character),
     );
@@ -183,9 +185,9 @@ models.get_status_of_id_on_date = async (id, date) => {
   }
   let results = null;
   if (date) {
-    results = models.get_statuses_on_date(date);
+    results = await models.get_statuses_on_date(date);
   } else {
-    results = models.get_statuses_on_date(date);
+    results = await models.get_statuses_on_date(date);
   }
   if (results) {
     if (results.update.includes(id)) {
