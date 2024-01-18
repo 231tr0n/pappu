@@ -15,8 +15,8 @@ models.status_return_type = (update, holiday) => {
     throw new Error('parameters are mandatory and should be arrays');
   }
   const ret = {};
-  ret.update = update;
-  ret.holiday = holiday;
+  ret.update = update.filter((n) => n && n !== '');
+  ret.holiday = holiday.filter((n) => n && n !== '');
   return ret;
 };
 
