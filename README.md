@@ -4,7 +4,7 @@ This a discord bot which can be used to monitor status updates.
 
 ## Setup
 
-Requirements : Nodejs<br>
+Requirements : Nodejs, gcc<br>
 Create a .env file, add the following lines in it and change the password to the one which you put:-
 
 ```
@@ -28,10 +28,14 @@ To run the application execute the command:-
 node .
 ```
 
-## Running the bot in the background.
+## Running the bot in the background
 
 Use forever package from npm.
 
 ```bash
 npx forever start index.js
 ```
+
+## Backup of data
+
+All the bot data is stored in the pappu.db file which basically serves as on disk storage for the embedded sqlite engine. You can place it in the project root to restore the data.
