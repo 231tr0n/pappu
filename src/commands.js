@@ -173,20 +173,18 @@ commands.delete_date = {
 commands.get_updates = {
   type: ['user', 'admin'],
   description:
-    'Prints all status updates in a given duration ([start_date(yyyy-mm-dd)] [end_date(yyyy-mm-dd)(optional)])',
+    'Prints all status updates in a given duration ([start_date(yyyy-mm-dd)(optional)] [end_date(yyyy-mm-dd)(optional)])',
   handler: async (message) => {
     let params = message.content.split(' ');
     params = params.filter((x) => x && x !== '');
     let start_date = null;
     let end_date = null;
     if (params.length < 2) {
-      message.reply('wrong parameters passed');
-      message.react(fail_character);
-      return;
-    }
-    if (params.length === 2 && utils.verify_date(params[1])) {
-      start_date = new Date(params[1]);
+      start_date = new Date();
       end_date = new Date();
+    } else if (params.length === 2 && utils.verify_date(params[1])) {
+      start_date = new Date(params[1]);
+      end_date = new Date(params[1]);
     } else if (
       params.length > 2
       && utils.verify_date(params[1])
@@ -200,13 +198,66 @@ commands.get_updates = {
       return;
     }
     let loop = new Date(start_date);
-    const results = [];
+    let output = '';
     while (loop <= end_date) {
-      results.push(await models.get_statuses_on_date(loop));
+      const pdate = `${loop.getFullYear()}-${(`0${loop.getMonth() + 1}`).slice(-2)}-${(`0${loop.getDate()}`).slice(-2)}`;
+      const res = await models.get_statuses_on_date(pdate);
+      output += '-------------\n';
+      output += `***${pdate}***\n`;
+      output += '\t\t\t\t**Update**\n';
+      for (const n of res.update) {
+        output += `\t\t\t\t\t\t\t\t<@${n}>\n`;
+      }
+      output += '\t\t\t\t**Holiday**\n';
+      for (const n of res.holiday) {
+        output += `\t\t\t\t\t\t\t\t<@${n}>\n`;
+      }
       loop = new Date(loop.setDate(loop.getDate() + 1));
     }
-    message.reply(`\`\`\`${results}\`\`\``);
+    message.reply(output);
     message.react(done_character);
+  },
+};
+
+commands.get_update = {
+  type: ['user', 'admin'],
+  description:
+    'Prints status update of a user at a given duration ([@user] [date(yyyy-mm-dd)(optional)])',
+  handler: async (message) => {
+    let params = message.content.split(' ');
+    params = params.filter((x) => x && x !== '');
+    if (params.length > 2) {
+      if (!utils.verify_date(params[2])) {
+        message.reply('wrong date format passed');
+        message.react(fail_character);
+        return;
+      }
+    }
+    if (params.length < 2 || !message.mentions.users.first()) {
+      message.reply('wrong parameters passed');
+      message.react(fail_character);
+      return;
+    }
+    let ret = null;
+    if (params.length > 2) {
+      ret = await models.get_status_of_id_on_date(message.mentions.users.first().id, params[2]);
+    } else {
+      ret = await models.get_status_of_id_on_date(message.mentions.users.first().id);
+    }
+    if (ret === models.statuses.update) {
+      message.reply('Update');
+      message.react(done_character);
+      return;
+    }
+    if (ret === models.statuses.no_update) {
+      message.reply('No Update');
+      message.react(done_character);
+      return;
+    }
+    if (ret === models.statuses.holiday) {
+      message.reply('Holiday');
+      message.react(done_character);
+    }
   },
 };
 
