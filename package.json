@@ -6,7 +6,7 @@
   "scripts": {
     "devstart": "npx nodemon .",
     "start": "node .",
-    "lint": "eslint --fix ."
+    "lint": "prettier --check --write . && eslint --fix ."
   },
   "repository": {
     "type": "git",
