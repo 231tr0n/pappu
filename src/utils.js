@@ -31,7 +31,7 @@ utils.verify_date = (date) => {
 };
 
 utils.verify_status = (status) => {
-  if (status === 'holiday' || status === 'update' || status === 'no_update') {
+  if (status === "holiday" || status === "update" || status === "no_update") {
     return true;
   }
   return false;

@@ -1,9 +1,9 @@
-import database from './database.js';
-import utils from './utils.js';
+import database from "./database.js";
+import utils from "./utils.js";
 
 const models = {};
 
-models.split_character = ',';
+models.split_character = ",";
 
 models.statuses = Object.freeze({
   holiday: 0,
@@ -12,12 +12,17 @@ models.statuses = Object.freeze({
 });
 
 models.status_return_type = (update, holiday) => {
-  if (!update || !holiday || !Array.isArray(update) || !Array.isArray(holiday)) {
-    throw new Error('parameters are mandatory and should be arrays');
+  if (
+    !update ||
+    !holiday ||
+    !Array.isArray(update) ||
+    !Array.isArray(holiday)
+  ) {
+    throw new Error("parameters are mandatory and should be arrays");
   }
   const ret = {};
-  ret.update = update.filter((n) => n && n !== '');
-  ret.holiday = holiday.filter((n) => n && n !== '');
+  ret.update = update.filter((n) => n && n !== "");
+  ret.holiday = holiday.filter((n) => n && n !== "");
   return ret;
 };
 
@@ -29,49 +34,50 @@ models.setup = async () => {
 
 models.insert_date = async (date) => {
   if (date && !utils.verify_date(date)) {
-    throw new Error('wrong date provided');
+    throw new Error("wrong date provided");
   }
   let results = null;
   if (date) {
-    results = await database.query('SELECT * FROM `status_updates` WHERE date = ?', [
-      date,
-    ]);
+    results = await database.query(
+      "SELECT * FROM `status_updates` WHERE date = ?",
+      [date],
+    );
   } else {
     results = await database.query(
-      'SELECT * FROM `status_updates` WHERE date = (date())',
+      "SELECT * FROM `status_updates` WHERE date = (date())",
     );
   }
   if (results && results.length > 0) {
     return;
   }
   if (date) {
-    await database.query('INSERT INTO `status_updates` (`date`) VALUES (?)', [
+    await database.query("INSERT INTO `status_updates` (`date`) VALUES (?)", [
       date,
     ]);
     return;
   }
-  await database.query('INSERT INTO `status_updates` (`date`) VALUES (date())');
+  await database.query("INSERT INTO `status_updates` (`date`) VALUES (date())");
 };
 
 models.delete_date = async (date) => {
   if (date && !utils.verify_date(date)) {
-    throw new Error('wrong date provided');
+    throw new Error("wrong date provided");
   }
   if (date) {
-    await database.query('DELETE FROM `status_updates` WHERE `date` = ?', [
+    await database.query("DELETE FROM `status_updates` WHERE `date` = ?", [
       date,
     ]);
     return;
   }
-  await database.query('DELETE FROM `status_updates` WHERE `date` = (date())');
+  await database.query("DELETE FROM `status_updates` WHERE `date` = (date())");
 };
 
 models.insert_status = async (id, status, date) => {
   if (date && !utils.verify_date(date)) {
-    throw new Error('wrong date provided');
+    throw new Error("wrong date provided");
   }
   if (status !== models.statuses.holiday && status !== models.statuses.update) {
-    throw new Error('invalid status');
+    throw new Error("invalid status");
   }
   await models.insert_date(date);
   let res = null;
@@ -102,10 +108,14 @@ models.insert_status = async (id, status, date) => {
 
 models.upsert_status = async (id, status, date) => {
   if (date && !utils.verify_date(date)) {
-    throw new Error('wrong date provided');
+    throw new Error("wrong date provided");
   }
-  if (status !== models.statuses.holiday && status !== models.statuses.update && status !== models.statuses.no_update) {
-    throw new Error('invalid status');
+  if (
+    status !== models.statuses.holiday &&
+    status !== models.statuses.update &&
+    status !== models.statuses.no_update
+  ) {
+    throw new Error("invalid status");
   }
   await models.insert_date(date);
   let ret = null;
@@ -141,33 +151,52 @@ models.upsert_status = async (id, status, date) => {
 
 models.set_statuses_on_date = async (statuses, date) => {
   if (date && !utils.verify_date(date)) {
-    throw new Error('wrong date provided');
+    throw new Error("wrong date provided");
   }
-  if (!statuses || !statuses.update || !statuses.holiday || !Array.isArray(statuses.update) || !Array.isArray(statuses.holiday)) {
-    throw new Error('wrong object provided');
+  if (
+    !statuses ||
+    !statuses.update ||
+    !statuses.holiday ||
+    !Array.isArray(statuses.update) ||
+    !Array.isArray(statuses.holiday)
+  ) {
+    throw new Error("wrong object provided");
   }
   if (date) {
     await models.delete_date(date);
-    await database.query('INSERT INTO `status_updates` (`date`, `update`, `holiday`) VALUES (?, ?, ?)', [date, statuses.update.join(models.split_character), statuses.holiday.join(models.split_character)]);
+    await database.query(
+      "INSERT INTO `status_updates` (`date`, `update`, `holiday`) VALUES (?, ?, ?)",
+      [
+        date,
+        statuses.update.join(models.split_character),
+        statuses.holiday.join(models.split_character),
+      ],
+    );
     return;
   }
   await models.delete_date();
-  await database.query('INSERT INTO `status_updates` (`date`, `update`, `holiday`) VALUES (date(), ?, ?)', [statuses.update.join(models.split_character), statuses.holiday.join(models.split_character)]);
+  await database.query(
+    "INSERT INTO `status_updates` (`date`, `update`, `holiday`) VALUES (date(), ?, ?)",
+    [
+      statuses.update.join(models.split_character),
+      statuses.holiday.join(models.split_character),
+    ],
+  );
 };
 
 models.get_statuses_on_date = async (date) => {
   if (date && !utils.verify_date(date)) {
-    throw new Error('wrong date provided');
+    throw new Error("wrong date provided");
   }
   let results = null;
   if (date) {
     results = await database.query(
-      'SELECT * FROM `status_updates` WHERE date = ?',
+      "SELECT * FROM `status_updates` WHERE date = ?",
       [date],
     );
   } else {
     results = await database.query(
-      'SELECT * FROM `status_updates` WHERE date = (date())',
+      "SELECT * FROM `status_updates` WHERE date = (date())",
     );
   }
   let ret = null;
@@ -182,7 +211,7 @@ models.get_statuses_on_date = async (date) => {
 
 models.get_status_of_id_on_date = async (id, date) => {
   if (date && !utils.verify_date(date)) {
-    throw new Error('wrong date provided');
+    throw new Error("wrong date provided");
   }
   let results = null;
   if (date) {
