@@ -26,84 +26,32 @@
     "bot": "readonly",
     "bot_command_initiator": "readonly"
   },
-  "extends": [
-    "airbnb",
-    "prettier"
-  ],
-  "plugins": [
-    "prettier"
-  ],
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": "error",
-    "import/extensions": [
-      "off"
-    ],
-    "no-process-exit": [
-      "off"
-    ],
-    "indent": [
-      "error",
-      2
-    ],
-    "no-console": [
-      "off"
-    ],
-    "no-tabs": [
-      "off"
-    ],
-    "space-unary-ops": [
-      "off"
-    ],
-    "no-plusplus": [
-      "off"
-    ],
-    "camelcase": [
-      "off"
-    ],
-    "eqeqeq": [
-      "error"
-    ],
-    "max-len": [
-      "off"
-    ],
-    "no-underscore-dangle": [
-      "off"
-    ],
-    "func-names": [
-      "off"
-    ],
-    "new-cap": [
-      "off"
-    ],
-    "no-unused-vars": [
-      "warn"
-    ],
-    "radix": [
-      "off"
-    ],
-    "no-restricted-syntax": [
-      "off"
-    ],
-    "no-loss-of-precision": [
-      "warn"
-    ],
-    "guard-for-in": [
-      "off"
-    ],
-    "prefer-destructuring": [
-      "off"
-    ],
-    "no-await-in-loop": [
-      "off"
-    ],
-    "no-restricted-globals": [
-      "off"
-    ],
-    "no-alert": [
-      "off"
-    ],
-    "no-continue": [
-      "off"
-    ]
+    "import/extensions": ["off"],
+    "no-process-exit": ["off"],
+    "indent": ["error", 2],
+    "no-console": ["off"],
+    "no-tabs": ["off"],
+    "space-unary-ops": ["off"],
+    "no-plusplus": ["off"],
+    "camelcase": ["off"],
+    "eqeqeq": ["error"],
+    "max-len": ["off"],
+    "no-underscore-dangle": ["off"],
+    "func-names": ["off"],
+    "new-cap": ["off"],
+    "no-unused-vars": ["warn"],
+    "radix": ["off"],
+    "no-restricted-syntax": ["off"],
+    "no-loss-of-precision": ["warn"],
+    "guard-for-in": ["off"],
+    "prefer-destructuring": ["off"],
+    "no-await-in-loop": ["off"],
+    "no-restricted-globals": ["off"],
+    "no-alert": ["off"],
+    "no-continue": ["off"]
   }
 }
