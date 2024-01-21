@@ -57,9 +57,11 @@ commands.query = {
   type: ['admin'],
   description: 'Lets you execute a query in the database',
   handler: async (message) => {
-    let message_content = message.content.replaceAll('```', '');
-    if (message_content.split(' ')[0] === `${bot_command_initiator}query`) {
-      message_content = message_content.split(' ').slice(1).join(' ');
+    let message_content = null;
+    if (message.content.split(' ')[0] === `${bot_command_initiator}query`) {
+      message_content = message.content.split(' ').slice(1).join(' ');
+    } else {
+      message_content = message.content.replaceAll('```', '');
     }
     database
       .query(message_content)

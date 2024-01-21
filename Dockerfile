@@ -1,7 +1,6 @@
 FROM archlinux:latest
 
-RUN pacman -Syu nodejs --noconfirm
-RUN pacman -Syu npm --noconfirm
+RUN pacman -Syu nodejs npm gcc --noconfirm --needed
 
 COPY . /root/pappu
 
