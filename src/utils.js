@@ -23,4 +23,18 @@ utils.bot.logs_channels.broadcast = async (message) => {
   }
 };
 
+utils.verify_date = (date) => {
+  if (Date.parse(date) && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return true;
+  }
+  return false;
+};
+
+utils.verify_status = (status) => {
+  if (status === 'holiday' || status === 'update' || status === 'no_update') {
+    return true;
+  }
+  return false;
+};
+
 export default utils;

@@ -1,4 +1,5 @@
 import database from './database.js';
+import utils from './utils.js';
 
 const models = {};
 
@@ -27,7 +28,7 @@ models.setup = async () => {
 };
 
 models.insert_date = async (date) => {
-  if (date && !Date.parse(date) && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+  if (date && !utils.verify_date(date)) {
     throw new Error('wrong date provided');
   }
   let results = null;
@@ -53,7 +54,7 @@ models.insert_date = async (date) => {
 };
 
 models.delete_date = async (date) => {
-  if (date && !Date.parse(date) && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+  if (date && !utils.verify_date(date)) {
     throw new Error('wrong date provided');
   }
   if (date) {
@@ -66,7 +67,7 @@ models.delete_date = async (date) => {
 };
 
 models.insert_status = async (id, status, date) => {
-  if (date && !Date.parse(date) && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+  if (date && !utils.verify_date(date)) {
     throw new Error('wrong date provided');
   }
   if (status !== models.statuses.holiday && status !== models.statuses.update) {
@@ -100,7 +101,7 @@ models.insert_status = async (id, status, date) => {
 };
 
 models.upsert_status = async (id, status, date) => {
-  if (date && !Date.parse(date) && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+  if (date && !utils.verify_date(date)) {
     throw new Error('wrong date provided');
   }
   if (status !== models.statuses.holiday && status !== models.statuses.update && status !== models.statuses.no_update) {
@@ -139,7 +140,7 @@ models.upsert_status = async (id, status, date) => {
 };
 
 models.set_statuses_on_date = async (statuses, date) => {
-  if (date && !Date.parse(date) && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+  if (date && !utils.verify_date(date)) {
     throw new Error('wrong date provided');
   }
   if (!statuses || !statuses.update || !statuses.holiday || !Array.isArray(statuses.update) || !Array.isArray(statuses.holiday)) {
@@ -155,7 +156,7 @@ models.set_statuses_on_date = async (statuses, date) => {
 };
 
 models.get_statuses_on_date = async (date) => {
-  if (date && !Date.parse(date) && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+  if (date && !utils.verify_date(date)) {
     throw new Error('wrong date provided');
   }
   let results = null;
@@ -180,7 +181,7 @@ models.get_statuses_on_date = async (date) => {
 };
 
 models.get_status_of_id_on_date = async (id, date) => {
-  if (date && !Date.parse(date) && !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+  if (date && !utils.verify_date(date)) {
     throw new Error('wrong date provided');
   }
   let results = null;
