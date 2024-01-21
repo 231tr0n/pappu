@@ -27,10 +27,18 @@
     "bot_command_initiator": "readonly"
   },
   "extends": [
-    "airbnb"
+    "airbnb",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
   ],
   "rules": {
+    "prettier/prettier": "error",
     "import/extensions": [
+      "off"
+    ],
+    "no-process-exit": [
       "off"
     ],
     "indent": [
