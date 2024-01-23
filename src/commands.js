@@ -222,17 +222,19 @@ commands.get_updates = {
     while (loop <= end_date) {
       const pdate = `${loop.getFullYear()}-${`0${loop.getMonth() + 1}`.slice(-2)}-${`0${loop.getDate()}`.slice(-2)}`;
       const res = await models.get_statuses_on_date(pdate);
-      output += "-------------\n";
-      output += `***${pdate}***\n`;
-      output += "\t\t\t\t**Update**\n";
-      for (const n of res.update) {
-        output += `\t\t\t\t\t\t\t\t<@${n}>\n`;
+      if (res) {
+        output += "-------------\n";
+        output += `***${pdate}***\n`;
+        output += "\t\t\t\t**Update**\n";
+        for (const n of res.update) {
+          output += `\t\t\t\t\t\t\t\t<@${n}>\n`;
+        }
+        output += "\t\t\t\t**Holiday**\n";
+        for (const n of res.holiday) {
+          output += `\t\t\t\t\t\t\t\t<@${n}>\n`;
+        }
+        loop = new Date(loop.setDate(loop.getDate() + 1));
       }
-      output += "\t\t\t\t**Holiday**\n";
-      for (const n of res.holiday) {
-        output += `\t\t\t\t\t\t\t\t<@${n}>\n`;
-      }
-      loop = new Date(loop.setDate(loop.getDate() + 1));
     }
     message.reply(output);
     message.react(done_character);

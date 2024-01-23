@@ -83,17 +83,18 @@ bot.on("messageCreate", async (message) => {
   try {
     if (message.author.id !== bot.user.id && message?.guild?.id === server_id) {
       if (status_updates_channels.includes(message.channel.id)) {
-        message.react(attended_character);
         if (
           message.content.startsWith("```") &&
           message.content.endsWith("```")
         ) {
+          message.react(attended_character);
           commands.status_update.handler(message);
         } else if (message.content.startsWith(bot_command_initiator)) {
           const split_message = message.content.split(" ");
           const command = split_message[0].slice(1);
           if (commands[command]) {
             if (commands[command].type.includes("user")) {
+              message.react(attended_character);
               commands[command].handler(message);
             } else {
               message.react(fail_character);
@@ -109,17 +110,18 @@ bot.on("messageCreate", async (message) => {
           }
         }
       } else if (admin_commands_channels.includes(message.channel.id)) {
-        message.react(attended_character);
         if (
           message.content.startsWith("```") &&
           message.content.endsWith("```")
         ) {
+          message.react(attended_character);
           commands.query.handler(message);
         } else if (message.content.startsWith(bot_command_initiator)) {
           const split_message = message.content.split(" ");
           const command = split_message[0].slice(1);
           if (commands[command]) {
             if (commands[command].type.includes("admin")) {
+              message.react(attended_character);
               commands[command].handler(message);
             } else {
               message.react(fail_character);
