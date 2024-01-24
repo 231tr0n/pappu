@@ -191,7 +191,7 @@ commands.delete_date = {
 };
 
 commands.get_updates = {
-  type: ["user", "admin"],
+  type: ["admin"],
   description:
     "Prints all status updates in a given duration ([start_date(yyyy-mm-dd)(optional)] [end_date(yyyy-mm-dd)(optional)])",
   handler: async (message) => {
