@@ -9,7 +9,6 @@ commands.ping = {
   description: "Shows ping",
   handler: async (message) => {
     message.reply(`${Math.round(bot.ws.ping)}ms pong.`);
-    message.react(done_character);
   },
 };
 
@@ -31,7 +30,6 @@ commands.help = {
     }
     temp += "```";
     message.reply(temp);
-    message.react(done_character);
   },
 };
 
@@ -40,7 +38,6 @@ commands.status_update = {
   description: "Puts status update",
   handler: async (message) => {
     await models.insert_status(message.author.id, models.statuses.update);
-    message.react(done_character);
   },
 };
 
@@ -49,7 +46,6 @@ commands.take_holiday = {
   description: "Puts holiday",
   handler: async (message) => {
     await models.insert_status(message.author.id, models.statuses.holiday);
-    message.react(done_character);
   },
 };
 
@@ -67,7 +63,6 @@ commands.query = {
       .query(message_content)
       .then((results) => {
         message.reply(`\`\`\`${JSON.stringify(results, null, 4)}\`\`\``);
-        message.react(done_character);
       })
       .catch((error) => {
         message.reply(`\`\`\`${JSON.stringify(error, null, 4)}\`\`\``);
@@ -104,14 +99,12 @@ commands.modify_update = {
           models.statuses.holiday,
           params[3],
         );
-        message.react(done_character);
         return;
       }
       await models.upsert_status(
         message.mentions.users.first().id,
         models.statuses.holiday,
       );
-      message.react(done_character);
       return;
     }
     if (params[2] === "update") {
@@ -121,14 +114,12 @@ commands.modify_update = {
           models.statuses.update,
           params[3],
         );
-        message.react(done_character);
         return;
       }
       await models.upsert_status(
         message.mentions.users.first().id,
         models.statuses.update,
       );
-      message.react(done_character);
       return;
     }
     if (params.length > 3) {
@@ -137,14 +128,12 @@ commands.modify_update = {
         models.statuses.no_update,
         params[3],
       );
-      message.react(done_character);
       return;
     }
     await models.upsert_status(
       message.mentions.users.first().id,
       models.statuses.no_update,
     );
-    message.react(done_character);
   },
 };
 
@@ -161,11 +150,9 @@ commands.add_date = {
         return;
       }
       await models.insert_date(params[1]);
-      message.react(done_character);
       return;
     }
     await models.insert_date();
-    message.react(done_character);
   },
 };
 
@@ -182,11 +169,9 @@ commands.delete_date = {
         return;
       }
       await models.delete_date(params[1]);
-      message.react(done_character);
       return;
     }
     await models.delete_date();
-    message.react(done_character);
   },
 };
 
@@ -217,9 +202,12 @@ commands.get_updates = {
       message.react(fail_character);
       return;
     }
-    let loop = new Date(start_date);
-    let output = "";
-    while (loop <= end_date) {
+    let output = "-------------\n";
+    for (
+      let loop = new Date(start_date);
+      loop <= end_date;
+      loop.setDate(loop.getDate() + 1)
+    ) {
       const pdate = `${loop.getFullYear()}-${`0${loop.getMonth() + 1}`.slice(-2)}-${`0${loop.getDate()}`.slice(-2)}`;
       const res = await models.get_statuses_on_date(pdate);
       if (res) {
@@ -233,11 +221,9 @@ commands.get_updates = {
         for (const n of res.holiday) {
           output += `\t\t\t\t\t\t\t\t<@${n}>\n`;
         }
-        loop = new Date(loop.setDate(loop.getDate() + 1));
       }
     }
     message.reply(output);
-    message.react(done_character);
   },
 };
 
@@ -273,17 +259,14 @@ commands.get_update = {
     }
     if (ret === models.statuses.update) {
       message.reply("Update");
-      message.react(done_character);
       return;
     }
     if (ret === models.statuses.no_update) {
       message.reply("No Update");
-      message.react(done_character);
       return;
     }
     if (ret === models.statuses.holiday) {
       message.reply("Holiday");
-      message.react(done_character);
     }
   },
 };
@@ -292,7 +275,6 @@ commands.shutdown = {
   type: ["admin"],
   description: "Shuts down the bot",
   handler: async (message) => {
-    await message.react(done_character);
     process.kill(process.pid, "SIGTERM");
   },
 };

@@ -88,14 +88,16 @@ bot.on("messageCreate", async (message) => {
           message.content.endsWith("```")
         ) {
           message.react(attended_character);
-          commands.status_update.handler(message);
+          await commands.status_update.handler(message);
+          message.react(done_character);
         } else if (message.content.startsWith(bot_command_initiator)) {
           const split_message = message.content.split(" ");
           const command = split_message[0].slice(1);
           if (commands[command]) {
             if (commands[command].type.includes("user")) {
               message.react(attended_character);
-              commands[command].handler(message);
+              await commands[command].handler(message);
+              message.react(done_character);
             } else {
               message.react(fail_character);
               message.reply(
@@ -115,14 +117,16 @@ bot.on("messageCreate", async (message) => {
           message.content.endsWith("```")
         ) {
           message.react(attended_character);
-          commands.query.handler(message);
+          await commands.query.handler(message);
+          message.react(done_character);
         } else if (message.content.startsWith(bot_command_initiator)) {
           const split_message = message.content.split(" ");
           const command = split_message[0].slice(1);
           if (commands[command]) {
             if (commands[command].type.includes("admin")) {
               message.react(attended_character);
-              commands[command].handler(message);
+              await commands[command].handler(message);
+              message.react(done_character);
             } else {
               message.react(fail_character);
               message.reply(
