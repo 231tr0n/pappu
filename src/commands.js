@@ -274,7 +274,7 @@ commands.get_update = {
 commands.shutdown = {
   type: ["admin"],
   description: "Shuts down the bot",
-  handler: async (message) => {
+  handler: async () => {
     process.kill(process.pid, "SIGTERM");
   },
 };
