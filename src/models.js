@@ -219,7 +219,7 @@ models.get_status_of_id_on_date = async (id, date) => {
   } else {
     results = await models.get_statuses_on_date(date);
   }
-  if (results && results.length > 0) {
+  if (results) {
     if (results.update.includes(id)) {
       return models.statuses.update;
     }

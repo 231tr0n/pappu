@@ -259,14 +259,10 @@ commands.get_update = {
     }
     if (ret === models.statuses.update) {
       message.reply("Update");
-      return;
-    }
-    if (ret === models.statuses.no_update) {
-      message.reply("No Update");
-      return;
-    }
-    if (ret === models.statuses.holiday) {
+    } else if (ret === models.statuses.holiday) {
       message.reply("Holiday");
+    } else {
+      message.reply("No Update");
     }
   },
 };
