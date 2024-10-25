@@ -4,9 +4,9 @@
   "description": "This a discord bot which can be used to monitor status updates.",
   "main": "src/index.js",
   "scripts": {
-    "devstart": "npx nodemon .",
+    "dev": "npx nodemon .",
     "start": "node .",
-    "lint": "prettier --check --write . && eslint --fix ."
+    "fmt": "prettier --check --write ."
   },
   "repository": {
     "type": "git",
@@ -20,19 +20,14 @@
   },
   "homepage": "https://gitlab.com/bi0s.pentest/pappu#readme",
   "dependencies": {
-    "discord.js": "^14.14.1",
-    "dotenv": "^16.4.1",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "eslint": "^8.56.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^5.1.3",
     "forever": "^4.0.3",
-    "nodemon": "^3.0.3",
-    "npm-check-updates": "^16.14.14",
-    "prettier": "^3.2.4"
+    "nodemon": "^3.1.7",
+    "npm-check-updates": "^17.1.6",
+    "prettier": "^3.3.3"
   }
 }
